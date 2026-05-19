@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python 学习与编程互助社区</title>
+  <meta name="description" content="面向本科生的 Python 学习网站，提供入门路线、课程资料、常见问题和编程互助入口。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="utility-bar">
+      <a href="#community">编程互助社区</a>
+      <a href="#knowledge">知识库</a>
+      <a href="#support">答疑支持</a>
+    </div>
+
+    <div class="brand-row">
+      <div>
+        <p class="eyebrow">Undergraduate Programming Help Desk</p>
+        <h1>Python 学习与编程互助社区</h1>
+        <p class="tagline">朋辈互助，知识沉淀，让编程经验持续传承。</p>
+      </div>
+      <form class="search-box" action="#knowledge">
+        <label for="site-search">站内搜索</label>
+        <div>
+          <input id="site-search" type="search" placeholder="搜索 NumPy、循环、文件读写...">
+          <button type="submit">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <nav class="main-nav" aria-label="主导航">
+      <a href="#start">开始学习</a>
+      <a href="#roadmap">学习路线</a>
+      <a href="#examples">示例代码</a>
+      <a href="#faq">常见问题</a>
+      <a href="#community">加入社区</a>
+    </nav>
+  </header>
+
+  <div class="page-shell">
+    <aside class="sidebar" aria-label="学习目录">
+      <section>
+        <h2>Python</h2>
+        <a href="#start">快速开始</a>
+        <a href="#roadmap">基础语法</a>
+        <a href="#examples">示例代码</a>
+        <a href="#faq">问题排查</a>
+      </section>
+      <section>
+        <h2>课程专题</h2>
+        <a href="#course-basic">程序设计基础</a>
+        <a href="#course-data">数据处理</a>
+        <a href="#course-plot">科学绘图</a>
+        <a href="#course-project">课程项目</a>
+      </section>
+      <section>
+        <h2>资源</h2>
+        <a href="#knowledge">知识库</a>
+        <a href="#support">答疑规则</a>
+        <a href="#moderators">版主招募</a>
+      </section>
+    </aside>
+
+    <main>
+      <section class="hero" id="start">
+        <div>
+          <p class="section-kicker">Python Learning Portal</p>
+          <h2>从第一行代码到课程项目</h2>
+          <p>本站为大气科学学院本科生准备，帮助同学系统学习 Python，并把每届同学遇到的典型问题沉淀为可检索、可更新的学习资料。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#roadmap">查看学习路线</a>
+            <a class="button secondary" href="#community">提交问题</a>
+          </div>
+        </div>
+        <div class="release-card">
+          <h3>当前重点</h3>
+          <p><strong>阶段：</strong>网站初版建设</p>
+          <p><strong>内容：</strong>Python 入门、数据处理、绘图、常见报错</p>
+          <p><strong>维护：</strong>学生版主团队持续更新</p>
+        </div>
+      </section>
+
+      <section class="notice-grid" aria-label="重点入口">
+        <article>
+          <h3>新生入口</h3>
+          <p>安装 Python、运行第一个程序、理解变量、条件、循环和函数。</p>
+          <a href="#course-basic">开始入门</a>
+        </article>
+        <article>
+          <h3>作业答疑</h3>
+          <p>按课程、问题类型、错误信息整理历史问答，减少重复踩坑。</p>
+          <a href="#faq">查看 FAQ</a>
+        </article>
+        <article>
+          <h3>专题工作坊</h3>
+          <p>版主整理高频问题，必要时对接教师开展专题讲座。</p>
+          <a href="#support">了解机制</a>
+        </article>
+      </section>
+
+      <section class="content-section" id="roadmap">
+        <div class="section-heading">
+          <p class="section-kicker">Roadmap</p>
+          <h2>学习路线</h2>
+        </div>
+        <div class="roadmap">
+          <article id="course-basic">
+            <span>01</span>
+            <h3>程序设计基础</h3>
+            <p>环境配置、变量、字符串、列表、字典、条件判断、循环和函数。</p>
+          </article>
+          <article id="course-data">
+            <span>02</span>
+            <h3>数据处理</h3>
+            <p>文件读写、CSV、NumPy、pandas、缺测值处理和批量计算。</p>
+          </article>
+          <article id="course-plot">
+            <span>03</span>
+            <h3>科学绘图</h3>
+            <p>Matplotlib 基础图、地图可视化、色标、子图和图片导出。</p>
+          </article>
+          <article id="course-project">
+            <span>04</span>
+            <h3>课程项目</h3>
+            <p>从问题拆解、代码组织、调试记录到报告复现，形成完整项目习惯。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section" id="examples">
+        <div class="section-heading">
+          <p class="section-kicker">Examples</p>
+          <h2>示例代码</h2>
+        </div>
+        <div class="code-panel">
+          <div class="code-title">读取 CSV 并绘制折线图</div>
+          <pre><code>import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("temperature.csv")
+
+plt.plot(data["date"], data["temp"])
+plt.xlabel("Date")
+plt.ylabel("Temperature")
+plt.title("Daily Temperature")
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()</code></pre>
+        </div>
+      </section>
+
+      <section class="content-section two-column" id="knowledge">
+        <div>
+          <p class="section-kicker">Knowledge Base</p>
+          <h2>知识库建设</h2>
+          <p>知识库按课程、语言、难度和问题类型归档。优质问答会标记为精华，过时内容会注明适用版本或更新日期。</p>
+        </div>
+        <ul class="link-list">
+          <li><a href="#faq">常见报错：SyntaxError、IndentationError、ModuleNotFoundError</a></li>
+          <li><a href="#examples">常用模板：读文件、画图、批量处理</a></li>
+          <li><a href="#support">提问模板：背景、代码、报错、已尝试方法</a></li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="faq">
+        <div class="section-heading">
+          <p class="section-kicker">FAQ</p>
+          <h2>常见问题</h2>
+        </div>
+        <details open>
+          <summary>为什么我的 Python 找不到安装的库？</summary>
+          <p>通常是解释器环境不一致。请确认终端、编辑器和安装命令使用的是同一个 Python 环境。</p>
+        </details>
+        <details>
+          <summary>提交问题时应该提供什么？</summary>
+          <p>请提供课程背景、最小可复现代码、完整报错截图或文本、输入数据格式，以及你已经尝试过的方法。</p>
+        </details>
+        <details>
+          <summary>版主不能解决的问题怎么办？</summary>
+          <p>版主会整理问题背景和已有尝试，再对接相关教师。共性问题可发展为专题讲座或答疑工作坊。</p>
+        </details>
+      </section>
+
+      <section class="content-section two-column" id="community">
+        <div>
+          <p class="section-kicker">Community</p>
+          <h2>加入编程互助社区</h2>
+          <p>社区面向学院全体本科生开放，目标是把零散答疑变成可传承的学习资源。</p>
+        </div>
+        <div class="contact-card" id="support">
+          <h3>答疑流程</h3>
+          <ol>
+            <li>同学按模板提交问题。</li>
+            <li>版主先做基础排查和分类归档。</li>
+            <li>疑难问题汇总后对接教师。</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="content-section" id="moderators">
+        <div class="section-heading">
+          <p class="section-kicker">Moderators</p>
+          <h2>版主招募</h2>
+        </div>
+        <p>欢迎具备一定编程基础、愿意帮助同学的本科生加入。每届版主在任期开始时与负责教师讨论工作设想，任期结束后形成总结和知识库更新记录。</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>Python 学习与编程互助社区 · 面向本科生的开放学习资料</p>
+    <p>建议使用 Gitee Pages 部署，后续可逐步接入问答系统、搜索和内容管理。</p>
+  </footer>
+</body>
+</html>
