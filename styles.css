@@ -273,6 +273,7 @@ main {
 
 .notice-grid h3,
 .roadmap h3,
+.course-grid h3,
 .contact-card h3 {
   color: var(--blue-850);
 }
@@ -286,21 +287,72 @@ main {
   margin-bottom: 18px;
 }
 
-.roadmap {
+.roadmap,
+.course-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-.roadmap article {
+.roadmap article,
+.course-grid article {
   padding: 18px;
   background: var(--soft);
   border: 1px solid var(--line);
 }
 
-.roadmap span {
+.roadmap span,
+.course-grid span {
   color: var(--gold);
   font-weight: 700;
+}
+
+.course-grid h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.course-grid p {
+  margin-bottom: 0;
+}
+
+.chapter-page .site-header {
+  margin-bottom: 24px;
+}
+
+.chapter-main {
+  max-width: 980px;
+  margin: 0 auto 44px;
+  padding: 0 18px;
+}
+
+.chapter-main .content-section {
+  margin-top: 0;
+}
+
+.chapter-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.chapter-meta span {
+  padding: 4px 10px;
+  color: var(--blue-850);
+  background: var(--blue-100);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
 }
 
 .code-panel {
@@ -396,7 +448,8 @@ summary {
   }
 
   .notice-grid,
-  .roadmap {
+  .roadmap,
+  .course-grid {
     grid-template-columns: 1fr;
   }
 }
