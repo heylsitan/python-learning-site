@@ -355,6 +355,187 @@ main {
   border-top: 1px solid var(--line);
 }
 
+.lesson-main {
+  max-width: 1120px;
+}
+
+.lesson-hero {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+  border-top: 6px solid var(--blue-700);
+}
+
+.lesson-hero h2 {
+  font-size: clamp(30px, 5vw, 52px);
+}
+
+.lesson-card,
+.practice-card {
+  background: var(--blue-100);
+  border-left: 5px solid var(--gold);
+}
+
+.lesson-card {
+  padding: 18px;
+}
+
+.lesson-card p {
+  margin-bottom: 14px;
+}
+
+.lesson-toc .lesson-grid {
+  margin-top: 16px;
+}
+
+.lesson-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.lesson-grid.four {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.lesson-grid a {
+  display: block;
+  min-height: 116px;
+  padding: 18px;
+  color: var(--blue-950);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.lesson-grid a span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: 28px;
+}
+
+.lesson-section {
+  margin-top: 28px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-title span {
+  min-width: 66px;
+  padding: 8px 10px;
+  color: #fff;
+  background: var(--blue-700);
+  text-align: center;
+  font-weight: 700;
+}
+
+.section-title h2 {
+  margin: 0;
+  color: var(--blue-950);
+  font-size: clamp(26px, 4vw, 40px);
+}
+
+.lesson-block {
+  align-items: stretch;
+}
+
+.big-list {
+  font-size: 20px;
+}
+
+.term-grid,
+.marker-grid,
+.example-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.term-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.term-grid div,
+.marker-grid span {
+  padding: 14px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+
+.term-grid p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.flow-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.flow-list div {
+  padding: 14px;
+  background: var(--blue-100);
+  border: 1px solid var(--line);
+  font-weight: 700;
+}
+
+.flow-list span {
+  display: block;
+  color: var(--blue-700);
+  font-size: 26px;
+}
+
+.lesson-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.lesson-table th,
+.lesson-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.lesson-table th {
+  color: #fff;
+  background: var(--blue-850);
+}
+
+.marker-grid {
+  grid-template-columns: repeat(4, 1fr);
+  margin: 14px 0;
+}
+
+.example-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.example-grid .content-section {
+  margin-top: 0;
+}
+
+.example-grid pre {
+  margin-top: 12px;
+  background: #0f1b2d;
+}
+
+.practice-card {
+  padding-left: 28px;
+}
+
 .code-panel {
   overflow: hidden;
   border: 1px solid #c9d4de;
@@ -431,7 +612,8 @@ summary {
 @media (max-width: 860px) {
   .brand-row,
   .hero,
-  .two-column {
+  .two-column,
+  .lesson-hero {
     grid-template-columns: 1fr;
   }
 
@@ -449,7 +631,12 @@ summary {
 
   .notice-grid,
   .roadmap,
-  .course-grid {
+  .course-grid,
+  .lesson-grid.four,
+  .term-grid,
+  .flow-list,
+  .marker-grid,
+  .example-grid {
     grid-template-columns: 1fr;
   }
 }

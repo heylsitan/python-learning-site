@@ -1,5 +1,395 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09 数据绘图一 Matplotlib</title><link rel="stylesheet" href="../styles.css"></head>
-<body class="chapter-page"><header class="site-header"><div class="brand-row"><div><p class="eyebrow">Chapter 09</p><h1>数据绘图一 Matplotlib</h1><p class="tagline">把数据转化为清晰、规范、可复现的图形。</p></div></div><nav class="main-nav" aria-label="章节导航"><a href="../index.html">首页</a><a href="08-xarray.html">上一章</a><a href="10-cartopy.html">下一章</a></nav></header><main class="chapter-main"><section class="content-section"><div class="chapter-meta"><span>数据绘图</span><span>Matplotlib</span><span>建议 4 学时</span></div><h2>学习目标</h2><ul><li>绘制折线图、散点图、柱状图、直方图和等值线图。</li><li>设置标题、坐标轴、图例、色标和子图布局。</li><li>导出适合报告和论文使用的图片。</li></ul><h2>建议材料</h2><p>可加入站点时间序列、二维场等常见气象图形示例。</p><h2>练习任务</h2><p>绘制一张包含两个子图的温度和降水时间序列图。</p><nav class="chapter-nav"><a href="08-xarray.html">上一章：Xarray</a><a href="10-cartopy.html">下一章：Cartopy</a></nav></section></main></body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 数据绘图一 Matplotlib</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="chapter-page lesson-page">
+  <header class="site-header">
+    <div class="brand-row">
+      <div>
+        <p class="eyebrow">Chapter 09</p>
+        <h1>气象数据绘图一 Matplotlib</h1>
+        <p class="tagline">从 Figure、Axes 到常见图形、样式控制和综合练习。</p>
+      </div>
+    </div>
+    <nav class="main-nav" aria-label="章节导航">
+      <a href="../index.html">首页</a>
+      <a href="08-xarray.html">上一章</a>
+      <a href="10-cartopy.html">下一章</a>
+      <a href="#practice">综合练习</a>
+    </nav>
+  </header>
+
+  <main class="chapter-main lesson-main">
+    <section class="lesson-hero content-section">
+      <div>
+        <div class="chapter-meta"><span>数据绘图</span><span>Matplotlib</span><span>建议 4 学时</span></div>
+        <h2>第九章 气象数据绘图一</h2>
+        <p>Matplotlib 是 Python 科学绘图的基础库。本章面向气象数据分析，重点掌握绘图对象、绘图流程、样式控制、常见图形、多子图、色标和图片保存。</p>
+      </div>
+      <aside class="lesson-card">
+        <strong>授课单位</strong>
+        <p>兰州大学大气科学学院</p>
+        <strong>作者</strong>
+        <p>马敏劲、程一帆、何永利</p>
+      </aside>
+    </section>
+
+    <section class="content-section lesson-toc">
+      <p class="section-kicker">Contents</p>
+      <h2>目录</h2>
+      <div class="lesson-grid four">
+        <a href="#intro"><span>01</span>Matplotlib 简介</a>
+        <a href="#workflow"><span>02</span>绘图流程</a>
+        <a href="#examples"><span>03</span>绘图示例</a>
+        <a href="#practice"><span>04</span>综合练习</a>
+      </div>
+    </section>
+
+    <section class="lesson-section" id="intro">
+      <div class="section-title"><span>01</span><h2>Matplotlib 简介</h2></div>
+      <article class="content-section">
+        <h3>为什么使用 Matplotlib？</h3>
+        <ul class="big-list">
+          <li>是目前使用最广泛的 Python 绘图库之一。</li>
+          <li>可以绘制二维和三维的多种图像。</li>
+          <li>是许多高级绘图库和科学绘图工具的基础。</li>
+        </ul>
+        <p>官方网站：<a href="https://matplotlib.org/">https://matplotlib.org/</a></p>
+      </article>
+
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>安装与引入</h3>
+          <p>建议在 Conda 环境中安装，方便和 NumPy、Pandas、Xarray 等科学计算库配合使用。</p>
+        </div>
+        <div class="code-panel"><div class="code-title">安装与导入</div><pre><code>conda install matplotlib
+
+from matplotlib import pyplot as plt</code></pre></div>
+      </article>
+
+      <article class="content-section">
+        <h3>Matplotlib 绘图对象</h3>
+        <div class="term-grid">
+          <div><strong>Figure</strong><p>整个图形，也就是画布。</p></div>
+          <div><strong>Axes</strong><p>真正绘图的坐标区域，一个 Figure 可包含多个 Axes。</p></div>
+          <div><strong>Title</strong><p>图题，用于说明图形主题。</p></div>
+          <div><strong>Legend</strong><p>图例，用于区分多条曲线或多组数据。</p></div>
+          <div><strong>Tick</strong><p>坐标刻度。</p></div>
+          <div><strong>Spines</strong><p>连接刻度的坐标轴边框线。</p></div>
+          <div><strong>Label</strong><p>坐标轴标签。</p></div>
+          <div><strong>Line / Marker</strong><p>线条和点标记。</p></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="lesson-section" id="workflow">
+      <div class="section-title"><span>02</span><h2>绘图流程</h2></div>
+      <article class="content-section">
+        <div class="flow-list">
+          <div><span>1</span>准备绘图所需数据</div>
+          <div><span>2</span>创建 Figure 对象</div>
+          <div><span>3</span>为 Figure 添加 Axes 对象</div>
+          <div><span>4</span>在 Axes 对象中绘图</div>
+          <div><span>5</span>显示或保存图像</div>
+        </div>
+        <div class="code-panel"><div class="code-title">最小绘图流程</div><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-np.pi, np.pi, 100)
+y = np.cos(x)
+z = np.sin(x)
+
+fig, ax = plt.subplots(figsize=(6.4, 4.8), dpi=100)
+ax.plot(x, y, label="cos(x)")
+ax.plot(x, z, label="sin(x)")
+ax.legend()
+plt.show()</code></pre></div>
+      </article>
+
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>Figure</h3>
+          <p>Figure 是 Matplotlib 的最高一级对象，用来创建画布。常用参数包括：</p>
+          <ul>
+            <li><code>figsize=(a, b)</code>：画布长宽，单位为英寸。</li>
+            <li><code>dpi</code>：每英寸像素点数，决定清晰度。</li>
+          </ul>
+          <p>画布像素尺寸为 <code>(a * dpi, b * dpi)</code>。</p>
+        </div>
+        <div class="code-panel"><div class="code-title">Figure 尺寸</div><pre><code>fig = plt.figure()
+
+fig = plt.figure(figsize=(6.4, 4.8), dpi=100)</code></pre></div>
+      </article>
+
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>Axes</h3>
+          <p>Axes 是矩形绘图容器。推荐使用 <code>plt.subplots()</code> 同时创建 Figure 和 Axes。</p>
+        </div>
+        <div class="code-panel"><div class="code-title">创建 Axes</div><pre><code>fig, ax = plt.subplots()
+ax.plot(x, y)
+
+fig, axes = plt.subplots(nrows=1, ncols=2)
+axes[0].plot(x, y)
+axes[1].plot(x, z)</code></pre></div>
+      </article>
+    </section>
+
+    <section class="lesson-section" id="styles">
+      <div class="section-title"><span>Style</span><h2>绘图样式</h2></div>
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>颜色与线型</h3>
+          <p>颜色可使用单字母或 CSS 十六进制颜色；线型用 <code>linestyle</code> 控制。</p>
+          <table class="lesson-table">
+            <thead><tr><th>颜色</th><th>含义</th><th>线型</th><th>含义</th></tr></thead>
+            <tbody>
+              <tr><td><code>b</code></td><td>蓝色</td><td><code>-</code></td><td>实线</td></tr>
+              <tr><td><code>g</code></td><td>绿色</td><td><code>--</code></td><td>虚线</td></tr>
+              <tr><td><code>r</code></td><td>红色</td><td><code>-.</code></td><td>点划线</td></tr>
+              <tr><td><code>k</code></td><td>黑色</td><td><code>:</code></td><td>点线</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-panel"><div class="code-title">颜色与线型</div><pre><code>ax.plot(x, y, color="b", linestyle="-")
+ax.plot(x, z, color="#d94841", linestyle="--")
+
+# fmt 写法：[marker][line][color]
+ax.plot(x, y, "o:r")</code></pre></div>
+      </article>
+
+      <article class="content-section">
+        <h3>标记 Marker</h3>
+        <p>参考菜鸟教程的 marker 说明，<code>plot()</code> 的 <code>marker</code> 参数控制每个点的形状，<code>markersize</code> 或 <code>ms</code> 控制大小，<code>markeredgecolor</code> / <code>mec</code> 控制边框色，<code>markerfacecolor</code> / <code>mfc</code> 控制填充色。</p>
+        <div class="marker-grid">
+          <span><code>.</code> 点</span><span><code>,</code> 像素点</span><span><code>o</code> 圆圈</span><span><code>v</code> 下三角</span>
+          <span><code>^</code> 上三角</span><span><code>&lt;</code> 左三角</span><span><code>&gt;</code> 右三角</span><span><code>s</code> 方形</span>
+          <span><code>p</code> 五边形</span><span><code>*</code> 星型</span><span><code>+</code> 加号</span><span><code>x</code> 乘号</span>
+          <span><code>D</code> 菱形</span><span><code>d</code> 瘦菱形</span><span><code>|</code> 竖线</span><span><code>_</code> 横线</span>
+        </div>
+        <div class="code-panel"><div class="code-title">Marker 示例</div><pre><code>ypoints = np.array([1, 3, 4, 5, 8, 9, 6])
+
+plt.plot(ypoints, marker="o", ms=10)
+plt.plot(ypoints, marker="*", ms=14, mec="r", mfc="#4CAF50")</code></pre></div>
+      </article>
+
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>标题、标签、刻度和网格线</h3>
+          <p>常用接口包括 <code>set_title()</code>、<code>set_xlabel()</code>、<code>set_ylabel()</code>、<code>set_xticks()</code>、<code>set_xticklabels()</code> 和 <code>grid()</code>。</p>
+        </div>
+        <div class="code-panel"><div class="code-title">Ticks 与 Gridlines</div><pre><code>fig, ax = plt.subplots()
+ax.plot(x, y)
+ax.set_title("Plot Sin(x)")
+ax.set_xlabel("x")
+ax.set_ylabel("sin(x)")
+ax.set_xticks(np.pi * np.array([-1, -0.5, 0, 0.5, 1]))
+ax.set_xticklabels([r"$-\pi$", r"$-\frac{\pi}{2}$", "0", r"$\frac{\pi}{2}$", r"$\pi$"])
+ax.set_yticks([-1, 0, 1])
+ax.grid(which="major", lw=1)</code></pre></div>
+      </article>
+
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>Spines 与图例</h3>
+          <p>Axes 的 spines 字典包含 <code>left</code>、<code>right</code>、<code>bottom</code>、<code>top</code>。图例位置用 <code>loc</code> 控制。</p>
+        </div>
+        <div class="code-panel"><div class="code-title">Spines 与 Legend</div><pre><code>ax.spines["right"].set_visible(False)
+ax.spines["top"].set_visible(False)
+ax.spines["bottom"].set_position(("data", 0))
+ax.spines["left"].set_position(("data", 0))
+
+ax.plot(x, y, label="sin(x)")
+ax.plot(x, z, label="cos(x)")
+ax.legend(loc="upper right")</code></pre></div>
+      </article>
+    </section>
+
+    <section class="lesson-section" id="examples">
+      <div class="section-title"><span>03</span><h2>绘图示例</h2></div>
+      <div class="example-grid">
+        <article class="content-section">
+          <h3>柱状图 Bar Chart</h3>
+          <p>用于比较多个项目的数据大小，例如纽约 2015 年 6-8 月晴天数。</p>
+          <pre><code>months = ["JUN", "JUL", "AUG"]
+sunny_times = [16, 19, 27]
+fig, ax = plt.subplots()
+ax.bar(months, sunny_times)</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>饼状图 Pie Chart</h3>
+          <p>用于显示一系列数据占总量的比例。</p>
+          <pre><code>weather = ["drizzle", "fog", "rain", "sun"]
+counts = [3, 2, 6, 20]
+fig, ax = plt.subplots()
+ax.pie(counts, labels=weather)</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>散点图 Scatter Chart</h3>
+          <p>用于显示两个变量的相关性，例如最高温和最低温。</p>
+          <pre><code>fig, ax = plt.subplots()
+ax.scatter(temp_max, temp_min)
+ax.set_xlabel("temp_max")
+ax.set_ylabel("temp_min")</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>等值线图 Contour Chart</h3>
+          <p>用于表示二维场或三维结构的表面。</p>
+          <pre><code>x = np.linspace(-2, 2, 100)
+y = np.linspace(-2, 2, 100)
+X, Y = np.meshgrid(x, y)
+Z = np.sqrt(X**2 + Y**2)
+fig, ax = plt.subplots()
+cs = ax.contourf(X, Y, Z)
+fig.colorbar(cs)</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>箱型图 Box Chart</h3>
+          <p>用于显示数据离散情况，包括四分位数、中位数和异常值。</p>
+          <pre><code>data = np.random.normal(1, 10, 50)
+fig, ax = plt.subplots()
+ax.boxplot(data)</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>直方图 Histogram Chart</h3>
+          <p>用于描述连续变量的分布。</p>
+          <pre><code>x = np.random.normal(20, 100, 100)
+fig, ax = plt.subplots()
+ax.hist(x, bins=[0, 20, 40, 60, 80])
+ax.set_ylabel("counts")</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>三维绘图 3D Chart</h3>
+          <p>导入 <code>mpl_toolkits.mplot3d</code> 后可以进行三维绘图。</p>
+          <pre><code>from mpl_toolkits import mplot3d
+
+fig = plt.figure()
+ax = plt.axes(projection="3d")
+ax.scatter(x, y, z)</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>填充图</h3>
+          <p>使用 <code>fill_between()</code> 填充两条曲线之间的区域。</p>
+          <pre><code>x = np.linspace(0, 10, 100)
+y1 = x**2
+y2 = 8 * x
+fig, ax = plt.subplots()
+ax.plot(x, y1, x, y2)
+ax.fill_between(x, y1, y2, where=y2 &gt; y1, facecolor="red", alpha=.2)</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>双坐标轴图</h3>
+          <p>当两个变量在 y 轴上有不同意义或单位时，可使用双坐标轴。</p>
+          <pre><code>x = np.linspace(0.1, 11, 20)
+fig, ax1 = plt.subplots()
+ax1.plot(x, np.exp(x))
+ax1.set_ylabel("exp(x)")
+ax2 = ax1.twinx()
+ax2.plot(x, np.log(x), "r")
+ax2.set_ylabel("log(x)")</code></pre>
+        </article>
+        <article class="content-section">
+          <h3>文字及注释</h3>
+          <p>使用 <code>text()</code> 和 <code>annotate()</code> 创建文字和注释。中文可通过字体文件设置。</p>
+          <pre><code>fig, ax = plt.subplots()
+ax.plot([1, 2, 3])
+ax.text(1.1, 1.9, "y=x")
+ax.annotate("x=1", xy=(1, 2), xytext=(1, 2.5),
+            arrowprops=dict(facecolor="k"))</code></pre>
+        </article>
+      </div>
+    </section>
+
+    <section class="lesson-section" id="subplots">
+      <div class="section-title"><span>Subplot</span><h2>多子图与色标</h2></div>
+      <article class="content-section">
+        <h3>多子图方法对比</h3>
+        <table class="lesson-table">
+          <thead><tr><th>方法</th><th>参数意义</th><th>示例</th></tr></thead>
+          <tbody>
+            <tr><td><code>subplot</code></td><td>按 <code>nrows * ncols</code> 切分 Figure，索引从 1 开始。</td><td><code>plt.subplot(2, 2, 2)</code></td></tr>
+            <tr><td><code>subplots</code></td><td>同时创建 Figure 和 Axes 数组。</td><td><code>fig, axes = plt.subplots(2, 2)</code></td></tr>
+            <tr><td><code>subplot2grid</code></td><td>用网格位置控制子图跨行跨列。</td><td><code>plt.subplot2grid((3, 3), (1, 0), rowspan=2, colspan=3)</code></td></tr>
+          </tbody>
+        </table>
+      </article>
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>多子图色标</h3>
+          <p>多个子图的数据范围不同时，即使用相同色表，也可能产生色标不一致。可用 <code>Normalize</code> 或 <code>levels</code> 固定色标范围。</p>
+        </div>
+        <div class="code-panel"><div class="code-title">固定 levels</div><pre><code>fig, axes = plt.subplots(1, 2)
+levels = np.arange(0, 18, 2)
+contourf1 = axes[0].contourf(x, y, data1, cmap="RdBu_r", levels=levels)
+contourf2 = axes[1].contourf(x, y, data2, cmap="RdBu_r", levels=levels)
+plt.colorbar(contourf1, ax=axes[0])
+plt.colorbar(contourf2, ax=axes[1])
+plt.tight_layout()</code></pre></div>
+      </article>
+    </section>
+
+    <section class="lesson-section" id="save">
+      <div class="section-title"><span>Save</span><h2>图片保存</h2></div>
+      <article class="content-section two-column lesson-block">
+        <div>
+          <h3>保存参数</h3>
+          <ul>
+            <li>文件名后缀决定格式，例如 <code>png</code>、<code>jpg</code>、<code>pdf</code>。</li>
+            <li>出版或报告图片通常建议 <code>dpi &gt; 300</code>。</li>
+            <li><code>bbox_inches="tight"</code> 可去掉图片周边空白。</li>
+          </ul>
+        </div>
+        <div class="code-panel"><div class="code-title">保存图片</div><pre><code>plt.savefig("figure.png", dpi=300, bbox_inches="tight")
+
+fig.savefig("figure.pdf", dpi=300, bbox_inches="tight")</code></pre></div>
+      </article>
+    </section>
+
+    <section class="lesson-section" id="practice">
+      <div class="section-title"><span>04</span><h2>综合练习</h2></div>
+      <article class="content-section practice-card">
+        <h3>Weather.csv 气象绘图练习</h3>
+        <p>使用 <code>Weather.csv</code> 数据，绘制 New York 2015 年 7 月逐日最高温、最低温和降水量图。</p>
+        <ol>
+          <li>用 Pandas 读取数据并筛选城市和日期。</li>
+          <li>使用折线图绘制最高温和最低温。</li>
+          <li>使用柱状图或双坐标轴绘制降水量。</li>
+          <li>添加标题、坐标轴标签、图例、网格线。</li>
+          <li>保存为 <code>newyork_201507_weather.png</code>，分辨率不低于 300 dpi。</li>
+        </ol>
+        <div class="code-panel"><div class="code-title">练习骨架</div><pre><code>import pandas as pd
+import matplotlib.pyplot as plt
+
+weather = pd.read_csv("Weather.csv")
+ny = weather[(weather["city"] == "New York") &amp; (weather["date"].str.startswith("2015-07"))]
+
+fig, ax1 = plt.subplots(figsize=(10, 4), dpi=120)
+ax1.plot(ny["date"], ny["temp_max"], label="temp_max")
+ax1.plot(ny["date"], ny["temp_min"], label="temp_min")
+ax1.set_ylabel("Temperature")
+ax1.legend(loc="upper left")
+ax1.grid(alpha=0.3)
+
+ax2 = ax1.twinx()
+ax2.bar(ny["date"], ny["precipitation"], alpha=0.25, color="tab:blue", label="precipitation")
+ax2.set_ylabel("Precipitation")
+
+plt.xticks(rotation=45)
+plt.title("New York Weather, July 2015")
+plt.tight_layout()
+plt.savefig("newyork_201507_weather.png", dpi=300, bbox_inches="tight")</code></pre></div>
+      </article>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="08-xarray.html">上一章：Xarray</a>
+      <a href="../index.html#roadmap">返回课程目录</a>
+      <a href="10-cartopy.html">下一章：Cartopy</a>
+    </nav>
+  </main>
+</body>
 </html>
