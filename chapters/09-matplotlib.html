@@ -151,6 +151,10 @@ plt.show()</code></pre></div>
             <li>课堂屏幕图：可用 <code>figsize=(8, 4.5)</code>。</li>
             <li>保存图：通常 <code>dpi=300</code> 起步。</li>
           </ul>
+          <div class="teaching-note">
+            <strong>延伸阅读</strong>
+            <p>保存图片时还要区分 <a href="#vector-vs-raster">矢量图和非矢量图</a>。这会影响 <code>dpi</code> 是否重要、图片放大后是否模糊，以及论文投稿时应选择 <code>pdf</code>、<code>svg</code> 还是 <code>png</code>。</p>
+          </div>
         </div>
         <div class="code-panel"><div class="code-title">Figure 尺寸</div><pre><code>fig = plt.figure(figsize=(6.4, 4.8), dpi=100)
 
@@ -538,6 +542,29 @@ fig.savefig("figure.pdf", bbox_inches="tight")
 
 # 避免 notebook 中残留图层
 plt.close(fig)</code></pre></div>
+      </article>
+
+      <article class="content-section two-column lesson-block" id="vector-vs-raster">
+        <div>
+          <h3>矢量图和非矢量图的区别</h3>
+          <p>矢量图用线条、路径、文字和几何对象保存图形，放大后边缘仍然清晰；非矢量图通常指位图或栅格图，用一个个像素保存图像，放大后会看到像素块或模糊边缘。</p>
+          <ul>
+            <li><strong>矢量图</strong>：常见格式有 <code>pdf</code>、<code>svg</code>、<code>eps</code>，适合折线图、散点图、柱状图、流程图和文字标注较多的图。</li>
+            <li><strong>非矢量图</strong>：常见格式有 <code>png</code>、<code>jpg</code>、<code>tif</code>，适合照片、卫星云图、雷达图、复杂填色场和像素型背景图。</li>
+            <li><code>dpi</code> 主要影响位图输出；矢量图的线条和文字可无限缩放，但其中嵌入的栅格图层仍会受分辨率影响。</li>
+            <li>论文或报告中的线图优先保存 <code>pdf</code> 或 <code>svg</code>；大范围 <code>contourf</code>、<code>pcolormesh</code> 或影像底图可保存高分辨率 <code>png</code>。</li>
+          </ul>
+        </div>
+        <div class="code-panel"><div class="code-title">格式选择</div><pre><code># 线图、散点图、柱状图：优先矢量格式
+fig.savefig("line_figure.pdf", bbox_inches="tight")
+fig.savefig("line_figure.svg", bbox_inches="tight")
+
+# 填色场、影像图：常用高分辨率位图
+fig.savefig("field_figure.png", dpi=300, bbox_inches="tight")
+
+# 混合复杂图层时，可同时导出两种格式检查效果
+fig.savefig("figure.pdf", bbox_inches="tight")
+fig.savefig("figure.png", dpi=300, bbox_inches="tight")</code></pre></div>
       </article>
 
       <article class="content-section">
