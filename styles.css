@@ -454,7 +454,9 @@ main {
 
 .term-grid,
 .marker-grid,
-.example-grid {
+.example-grid,
+.principle-grid,
+.checklist-grid {
   display: grid;
   gap: 14px;
 }
@@ -463,16 +465,66 @@ main {
   grid-template-columns: repeat(4, 1fr);
 }
 
+.principle-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.checklist-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .term-grid div,
-.marker-grid span {
+.marker-grid span,
+.principle-grid div,
+.checklist-grid div,
+.example-grid > article {
   padding: 14px;
   background: var(--soft);
   border: 1px solid var(--line);
 }
 
-.term-grid p {
+.term-grid p,
+.principle-grid p,
+.checklist-grid p,
+.example-grid p {
   margin-bottom: 0;
   color: var(--muted);
+}
+
+.teaching-note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #fff8e4;
+  border-left: 5px solid var(--gold);
+}
+
+.teaching-note p {
+  margin: 6px 0 0;
+}
+
+.figure-row {
+  margin: 18px 0 4px;
+}
+
+.figure-row figure {
+  margin: 0;
+  padding: 14px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+
+.figure-row img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+}
+
+.figure-row figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .flow-list {
@@ -527,6 +579,12 @@ main {
   margin-top: 0;
 }
 
+.example-grid h4 {
+  margin: 0 0 8px;
+  color: var(--blue-850);
+  font-size: 17px;
+}
+
 .example-grid pre {
   margin-top: 12px;
   background: #0f1b2d;
@@ -559,6 +617,25 @@ code {
   color: #e9f2ff;
   font-family: Menlo, Consolas, monospace;
   font-size: 14px;
+}
+
+p code,
+li code,
+td code,
+th code,
+figcaption code,
+.chapter-meta code {
+  padding: 1px 5px;
+  color: var(--blue-850);
+  background: var(--blue-100);
+  border: 1px solid #dbe7f0;
+}
+
+pre code {
+  padding: 0;
+  color: #e9f2ff;
+  background: transparent;
+  border: 0;
 }
 
 .two-column {
@@ -634,6 +711,8 @@ summary {
   .course-grid,
   .lesson-grid.four,
   .term-grid,
+  .principle-grid,
+  .checklist-grid,
   .flow-list,
   .marker-grid,
   .example-grid {
