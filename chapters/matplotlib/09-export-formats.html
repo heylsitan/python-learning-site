@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-09 图片保存与格式</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 09</p><h1>图片保存与格式</h1><p class="tagline">理解 dpi、位图和矢量图格式，才能稳定输出论文级图片。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="08-layout-subplots.html">上一节</a><a href="10-practice.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>进阶选学</span><span>建议 30 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能用 <code>savefig</code> 保存 PNG 和 PDF。</li><li>能解释 <code>dpi</code> 对位图输出的影响。</li><li>能区分位图和矢量图格式的适用场景。</li></ol></section>
+  <section class="content-section two-column lesson-block"><div><h2>核心概念</h2><p>PNG/JPG/TIF 是位图格式，用像素保存图像；PDF/SVG/EPS 是常见矢量图格式，用路径、线条和文字保存图形。线图优先矢量图格式，复杂填色场可用高分辨率 PNG。</p><ul><li><code>dpi</code> 主要影响位图。</li><li><code>bbox_inches="tight"</code> 可减少空白边。</li><li>混合复杂图层时建议同时导出 PNG 和 PDF 检查。</li></ul></div><div class="code-panel"><div class="code-title">最小可运行代码</div><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+fig, ax = plt.subplots(figsize=(5, 3), dpi=120)
+ax.plot(x, y, lw=2)
+ax.set_xlabel("x")
+ax.set_ylabel("sin(x)")
+fig.tight_layout()
+
+fig.savefig("line_figure.png", dpi=300, bbox_inches="tight")
+fig.savefig("line_figure.pdf", bbox_inches="tight")
+plt.close(fig)</code></pre></div></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>保存图模糊</strong><p>低分辨率 PNG 被放大。修正：提高 <code>dpi</code> 或导出 PDF/SVG。</p></div><div class="error-card"><strong>图边空白太大</strong><p>默认边距保留太多。修正：使用 <code>bbox_inches="tight"</code>。</p></div><div class="error-card"><strong>矢量图格式文件过大</strong><p>大量栅格填色对象被写入 PDF。修正：复杂填色场改用高分辨率 PNG。</p></div></div></section>
+  <section class="content-section"><h2>课堂练习</h2><p>保存同一张线图为 PNG 和 PDF，放大到 300% 比较文字和线条边缘。</p><div class="summary-card"><strong>小结</strong><p>线图和文字多的图优先矢量图格式；像素场、影像图和复杂填色图优先高分辨率位图。</p></div></section>
+  <nav class="mini-nav"><a href="08-layout-subplots.html">上一节</a><a href="../09-matplotlib.html">本章首页</a><a href="10-practice.html">下一节</a></nav>
+</main>
+</body>
+</html>

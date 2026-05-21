@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-10 综合练习</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 10</p><h1>综合练习与评分标准</h1><p class="tagline">把基础图、二维场、风矢量场和导出格式整合成可评价任务。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="09-export-formats.html">上一节</a><a href="../10-cartopy.html">下一章</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>综合练习</span><span>建议 90 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能完成一张时间序列综合图。</li><li>能完成两幅二维场共享色标对比图。</li><li>能完成风矢量场抽稀图并解释图形选择。</li></ol></section>
+  <section class="content-section"><h2>核心概念</h2><p>综合练习考查完整绘图流程：先确认数据字段，再选择图形类型，最后补齐坐标轴、图例、色标、说明文字和导出格式。若课堂提供 <code>Weather.csv</code>，字段建议包含 <code>date</code>、<code>city</code>、<code>temp_max</code>、<code>temp_min</code>、<code>precipitation</code>。</p><div class="code-panel"><div class="code-title">可替代 Weather.csv 的教学数据</div><pre><code>import numpy as np
+import pandas as pd
+
+rng = np.random.default_rng(42)
+date = pd.date_range("2015-07-01", periods=31)
+weather = pd.DataFrame({
+    "date": date,
+    "city": "New York",
+    "temp_max": 30 + 4 * np.sin(np.linspace(0, 2 * np.pi, 31)) + rng.normal(0, 0.6, 31),
+    "temp_min": 21 + 3 * np.sin(np.linspace(0, 2 * np.pi, 31)) + rng.normal(0, 0.5, 31),
+    "precipitation": rng.gamma(1.5, 2.0, 31)
+})</code></pre></div></section>
+  <section class="content-section"><h2>课堂练习</h2><div class="level-grid"><div class="level-card"><span>基础必做</span><strong>时间序列综合图</strong><p>画最高温、最低温和降水量，包含单位、图例、网格、日期刻度和 PNG 导出。</p></div><div class="level-card"><span>提高任务</span><strong>二维异常场对比图</strong><p>构造两组二维场，使用统一 <code>levels</code> 和共享色标，叠加等值线标签。</p></div><div class="level-card"><span>挑战任务</span><strong>风矢量场抽稀图</strong><p>画 <code>quiver</code> 或 <code>streamplot</code>，说明抽稀步长和参考箭头含义。</p></div></div></section>
+  <section class="content-section two-column lesson-block"><div><h2>最小可运行代码</h2><p>如果使用真实 <code>Weather.csv</code>，把构造 DataFrame 的部分替换为 <code>pd.read_csv(..., parse_dates=["date"])</code>。</p></div><div class="code-panel"><div class="code-title">时间序列图</div><pre><code>import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+ny = weather[weather["city"] == "New York"]
+fig, ax1 = plt.subplots(figsize=(10, 4), dpi=150)
+ax1.plot(ny["date"], ny["temp_max"], color="tab:red", label="Tmax")
+ax1.plot(ny["date"], ny["temp_min"], color="tab:blue", label="Tmin")
+ax1.fill_between(ny["date"], ny["temp_min"], ny["temp_max"],
+                 color="tab:orange", alpha=0.18, label="Daily range")
+ax1.set_ylabel("Temperature (deg C)")
+ax1.grid(ls="--", alpha=0.35)
+ax1.legend(loc="upper left", frameon=False)
+ax2 = ax1.twinx()
+ax2.bar(ny["date"], ny["precipitation"], color="tab:blue", alpha=0.25)
+ax2.set_ylabel("Precipitation (mm)")
+ax1.xaxis.set_major_locator(mdates.DayLocator(interval=5))
+ax1.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d"))
+fig.autofmt_xdate()
+fig.savefig("newyork_201507_weather.png", dpi=300, bbox_inches="tight")</code></pre></div></section>
+  <section class="content-section"><h2>评分标准</h2><table class="lesson-table"><thead><tr><th>项目</th><th>比例</th><th>要求</th></tr></thead><tbody><tr><td>图形完成度</td><td>40%</td><td>图形类型正确，代码能运行，主体变量完整。</td></tr><tr><td>科学表达</td><td>30%</td><td>单位、图例、色标、刻度和标题能支撑结论。</td></tr><tr><td>规范输出</td><td>20%</td><td>文件名清晰，分辨率或格式选择合理。</td></tr><tr><td>解释说明</td><td>10%</td><td>能说明图形选择、色标范围或抽稀步长。</td></tr></tbody></table></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>只提交图片不提交代码</strong><p>无法复现。修正：同时提交脚本或 notebook。</p></div><div class="error-card"><strong>没有说明色标范围</strong><p>对比图不可解释。修正：在文字说明中写明 <code>levels</code>。</p></div><div class="error-card"><strong>双坐标轴颜色不对应</strong><p>读者分不清左右轴。修正：轴标签颜色与图层颜色一致。</p></div></div><div class="summary-card"><strong>小结</strong><p>综合练习评价的是完整绘图流程：数据、图形、修饰、解释和保存，而不是只看图片是否好看。</p></div></section>
+  <nav class="mini-nav"><a href="09-export-formats.html">上一节</a><a href="../09-matplotlib.html">本章首页</a><a href="../10-cartopy.html">下一章：Cartopy</a></nav>
+</main>
+</body>
+</html>

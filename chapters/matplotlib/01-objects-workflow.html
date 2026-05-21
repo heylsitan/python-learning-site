@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-01 对象模型与绘图流程</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 01</p><h1>对象模型与绘图流程</h1><p class="tagline">先理解 Figure、Axes、Axis、Artist，再写稳定的绘图代码。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="02-basic-charts.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>基础必学</span><span>建议 35 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能说清 Figure、Axes、Axis、Artist 的关系。</li><li>能用对象式 API 完成一张基础图。</li><li>能按“数据、画布、主体、修饰、保存”的顺序组织脚本。</li></ol></section>
+  <section class="content-section two-column lesson-block"><div><h2>核心概念</h2><p><strong>Figure</strong> 是整张画布，<strong>Axes</strong> 是具体绘图区，<strong>Axis</strong> 管理横轴或纵轴刻度，<strong>Artist</strong> 是线、点、文字、图例等所有可见元素。</p><div class="page-note"><p>本科课堂建议默认使用 <code>fig, ax = plt.subplots()</code>。它比 <code>plt.plot()</code> 更适合多子图、共享色标和后续 Cartopy 课程。</p></div></div><div class="code-panel"><div class="code-title">最小可运行代码</div><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 200)
+y = np.sin(x)
+
+fig, ax = plt.subplots(figsize=(6, 3), dpi=120)
+ax.plot(x, y, color="tab:blue", lw=2, label="sin(x)")
+ax.set_title("A first object-oriented Matplotlib figure")
+ax.set_xlabel("x")
+ax.set_ylabel("sin(x)")
+ax.grid(ls="--", alpha=0.35)
+ax.legend(frameon=False)
+fig.tight_layout()
+plt.show()</code></pre></div></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>混用太多 <code>plt</code> 状态接口</strong><p>复杂图中容易修饰错子图。修正：对具体 <code>ax</code> 调用 <code>ax.plot()</code>、<code>ax.set_xlabel()</code>。</p></div><div class="error-card"><strong>不知道图例来自哪里</strong><p>没有设置 <code>label</code> 就调用 <code>legend()</code>。修正：绘制线条时同步写 <code>label</code>。</p></div><div class="error-card"><strong>忘记布局调整</strong><p>标题或标签被截断。修正：保存前使用 <code>fig.tight_layout()</code>。</p></div></div></section>
+  <section class="content-section"><h2>课堂练习</h2><p>把示例中的 <code>sin(x)</code> 改成 <code>cos(x)</code>，再同时画出两条曲线并添加图例。</p><div class="summary-card"><strong>小结</strong><p>对象式 API 的核心是：先有 <code>fig</code> 和 <code>ax</code>，再把所有图层和修饰都明确加到这个 <code>ax</code> 上。</p></div></section>
+  <nav class="mini-nav"><a href="../09-matplotlib.html">返回本章首页</a><a href="02-basic-charts.html">下一节：基础图形选择</a></nav>
+</main>
+</body>
+</html>

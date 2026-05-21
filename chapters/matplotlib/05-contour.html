@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-05 等值线与填色图</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 05</p><h1>等值线与填色图</h1><p class="tagline">二维气象场绘图的核心是维度匹配和等值线层级。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="04-style-annotation.html">上一节</a><a href="06-colorbar-colormap.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>气象核心</span><span>建议 45 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能用 <code>np.meshgrid()</code> 构造二维坐标。</li><li>能区分 <code>contour</code> 和 <code>contourf</code>。</li><li>能添加等值线标签并解释 <code>levels</code>。</li></ol></section>
+  <section class="content-section"><h2>核心概念</h2><p><code>contour</code> 画线，适合高度场、气压场和温度线；<code>contourf</code> 画填色，适合异常场、降水和湿度背景。关键前提是 <code>X</code>、<code>Y</code>、<code>Z</code> 形状匹配。</p><div class="figure-row"><figure><img src="../../assets/matplotlib/contour-colorbar.png" alt="Contour and colorbar example"><figcaption>二维场图应显式设置 <code>levels</code>，避免每次运行自动生成不同层级。</figcaption></figure></div></section>
+  <section class="content-section two-column lesson-block"><div><h2>最小可运行代码</h2><p>这段代码构造一个理想化高度场和温度异常场。先画填色，再叠加黑色等值线。</p></div><div class="code-panel"><div class="code-title">contour + contourf</div><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+lon = np.linspace(70, 140, 141)
+lat = np.linspace(15, 55, 81)
+X, Y = np.meshgrid(lon, lat)
+height = 5800 + 80 * np.sin(X / 10) * np.cos(Y / 8)
+anom = 3 * np.sin((X - 100) / 15) * np.cos((Y - 35) / 8)
+
+fig, ax = plt.subplots(figsize=(7, 4), dpi=120)
+cf = ax.contourf(X, Y, anom, levels=np.arange(-3, 3.5, 0.5),
+                 cmap="RdBu_r", extend="both")
+cs = ax.contour(X, Y, height, levels=np.arange(5720, 5881, 40),
+                colors="k", linewidths=0.8)
+ax.clabel(cs, fmt="%.0f", fontsize=8)
+ax.set_xlabel("Longitude")
+ax.set_ylabel("Latitude")
+fig.colorbar(cf, ax=ax, label="Temperature anomaly (deg C)")
+fig.tight_layout()
+plt.show()</code></pre></div></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>维度不匹配</strong><p><code>lon</code>、<code>lat</code> 是一维，<code>Z</code> 是二维。修正：用 <code>np.meshgrid(lon, lat)</code>。</p></div><div class="error-card"><strong>等值线标签没有出现</strong><p>只调用 <code>contour</code> 不会自动标值。修正：保存返回值并调用 <code>ax.clabel(cs)</code>。</p></div><div class="error-card"><strong>参数名写错</strong><p><code>contour</code> 常用 <code>colors</code>、<code>linewidths</code>，不是单数 <code>color</code>。</p></div></div></section>
+  <section class="content-section"><h2>课堂练习</h2><p>把高度场等值线间隔从 40 改为 20，观察标签密度是否影响读图。</p><div class="summary-card"><strong>小结</strong><p>二维场图先检查维度，再设置 <code>levels</code>，最后添加色标和等值线标签。</p></div></section>
+  <nav class="mini-nav"><a href="04-style-annotation.html">上一节</a><a href="../09-matplotlib.html">本章首页</a><a href="06-colorbar-colormap.html">下一节</a></nav>
+</main>
+</body>
+</html>

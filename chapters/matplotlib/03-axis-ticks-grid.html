@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-03 坐标轴、刻度和网格</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 03</p><h1>坐标轴、刻度和网格</h1><p class="tagline">让读者知道变量、单位、范围和关键刻度。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="02-basic-charts.html">上一节</a><a href="04-style-annotation.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>基础必学</span><span>建议 40 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能设置坐标范围、标签和单位。</li><li>能使用主副刻度控制读数密度。</li><li>能让日期轴保持清晰。</li></ol></section>
+  <section class="content-section two-column lesson-block"><div><h2>核心概念</h2><p>坐标轴是科学图最容易被忽略的部分。气象图至少要明确变量名、单位、显示范围、刻度间隔和网格是否有助于读数。</p><ul><li><code>set_xlim</code> / <code>set_ylim</code> 控制范围。</li><li><code>MultipleLocator</code> 控制等距刻度。</li><li><code>DateFormatter</code> 控制日期显示。</li></ul></div><div class="code-panel"><div class="code-title">最小可运行代码</div><pre><code>import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import matplotlib.ticker as mticker
+
+date = pd.date_range("2015-07-01", periods=31)
+temp = 28 + 4 * np.sin(np.linspace(0, 2 * np.pi, 31))
+
+fig, ax = plt.subplots(figsize=(8, 3), dpi=120)
+ax.plot(date, temp, marker="o", ms=3)
+ax.set_ylabel("Temperature (deg C)")
+ax.set_ylim(22, 34)
+ax.yaxis.set_major_locator(mticker.MultipleLocator(2))
+ax.yaxis.set_minor_locator(mticker.MultipleLocator(1))
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d"))
+ax.tick_params(which="both", direction="in", top=True, right=True)
+ax.grid(which="major", ls="--", alpha=0.35)
+fig.autofmt_xdate()
+fig.tight_layout()
+plt.show()</code></pre></div></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>日期轴太拥挤</strong><p>每天都显示标签会重叠。修正：使用 <code>DayLocator(interval=5)</code>。</p></div><div class="error-card"><strong>缺少单位</strong><p>只写 Temperature 不够。修正：写成 <code>Temperature (deg C)</code>。</p></div><div class="error-card"><strong>网格压过主体</strong><p>网格太黑会抢注意力。修正：设置 <code>alpha</code> 和虚线。</p></div></div></section>
+  <section class="content-section"><h2>课堂练习</h2><p>把 y 轴主刻度改为 5 度、副刻度改为 1 度，并比较读图效果。</p><div class="summary-card"><strong>小结</strong><p>坐标轴决定读者能不能准确读图，先调范围和单位，再考虑颜色和线型。</p></div></section>
+  <nav class="mini-nav"><a href="02-basic-charts.html">上一节</a><a href="../09-matplotlib.html">本章首页</a><a href="04-style-annotation.html">下一节</a></nav>
+</main>
+</body>
+</html>

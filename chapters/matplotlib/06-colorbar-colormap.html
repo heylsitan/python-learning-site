@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-06 色标与颜色映射</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 06</p><h1>色标与颜色映射</h1><p class="tagline">色标是数值解释系统，不是装饰条。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="05-contour.html">上一节</a><a href="07-wind-vector-field.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>气象核心</span><span>建议 45 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能给可映射对象添加 <code>colorbar</code>。</li><li>能用统一 <code>levels</code> 比较两幅图。</li><li>能用 <code>TwoSlopeNorm</code> 和 <code>BoundaryNorm</code> 处理异常场和等级场。</li></ol></section>
+  <section class="content-section two-column lesson-block"><div><h2>核心概念</h2><p><code>cmap</code> 决定颜色，<code>levels</code> 决定分级，<code>norm</code> 决定数值如何映射到颜色。多图比较时必须共享范围。</p><div class="page-note"><p>异常场通常需要让 0 位于色标中心；降水等级更适合离散边界。</p></div></div><div class="code-panel"><div class="code-title">最小可运行代码</div><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import TwoSlopeNorm
+
+x = np.linspace(-3, 3, 120)
+y = np.linspace(-2, 2, 90)
+X, Y = np.meshgrid(x, y)
+data1 = X * np.exp(-X**2 - Y**2)
+data2 = data1 + 0.25 * np.sin(2 * Y)
+levels = np.arange(-0.6, 0.65, 0.1)
+norm = TwoSlopeNorm(vmin=-0.6, vcenter=0, vmax=0.6)
+
+fig, axes = plt.subplots(1, 2, figsize=(8, 3), dpi=120)
+for ax, data, title in zip(axes, [data1, data2], ["A", "B"]):
+    cf = ax.contourf(X, Y, data, levels=levels,
+                     cmap="RdBu_r", norm=norm, extend="both")
+    ax.set_title(title)
+fig.colorbar(cf, ax=axes, orientation="horizontal",
+             pad=0.12, label="Anomaly")
+plt.show()</code></pre></div></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>未传入 mappable</strong><p><code>fig.colorbar()</code> 不知道解释哪个图层。修正：保存 <code>cf</code> 或 <code>sc</code> 并传入。</p></div><div class="error-card"><strong>两幅图色标范围不同</strong><p>颜色相同但数值不同。修正：共享 <code>levels</code> 和 <code>norm</code>。</p></div><div class="error-card"><strong>降水等级颜色不清晰</strong><p>连续色标不表达等级边界。修正：使用 <code>BoundaryNorm</code>。</p></div></div></section>
+  <section class="content-section"><h2>课堂练习</h2><p>把色标改为竖向，并将 <code>levels</code> 间隔从 0.1 改为 0.2，比较信息损失。</p><div class="summary-card"><strong>小结</strong><p>色标必须和数据范围绑定。比较图先统一范围，再谈配色。</p></div></section>
+  <nav class="mini-nav"><a href="05-contour.html">上一节</a><a href="../09-matplotlib.html">本章首页</a><a href="07-wind-vector-field.html">下一节</a></nav>
+</main>
+</body>
+</html>

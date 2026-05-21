@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>09-02 基础图形选择</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Matplotlib 02</p><h1>基础图形选择</h1><p class="tagline">从问题类型出发，而不是从函数名出发。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../09-matplotlib.html">本章首页</a><a href="01-objects-workflow.html">上一节</a><a href="03-axis-ticks-grid.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>基础必学</span><span>建议 40 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能根据变量类型选择合适图形。</li><li>能画折线图、散点图、柱状图、直方图和箱线图。</li><li>能解释图形选择和科学问题之间的关系。</li></ol></section>
+  <section class="content-section"><h2>核心概念</h2><table class="lesson-table"><thead><tr><th>问题</th><th>图形</th><th>函数</th><th>气象例子</th></tr></thead><tbody><tr><td>随时间变化</td><td>折线图</td><td><code>plot</code></td><td>逐日温度</td></tr><tr><td>两个变量关系</td><td>散点图</td><td><code>scatter</code></td><td>观测与模拟对比</td></tr><tr><td>类别比较</td><td>柱状图</td><td><code>bar</code></td><td>各月暴雨日数</td></tr><tr><td>分布形态</td><td>直方图/箱线图</td><td><code>hist</code>/<code>boxplot</code></td><td>误差分布</td></tr></tbody></table></section>
+  <section class="content-section two-column lesson-block"><div><h2>最小可运行代码</h2><p>这段代码构造一组小型天气数据，同时展示基础图形。学生可以逐个注释/取消注释观察差异。</p></div><div class="code-panel"><div class="code-title">基础图形合集</div><pre><code>import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(7)
+days = np.arange(1, 11)
+tmax = 26 + 4 * np.sin(days / 10 * np.pi) + rng.normal(0, 0.5, 10)
+tmin = tmax - rng.uniform(6, 10, 10)
+rain_days = [3, 5, 8]
+months = ["Jun", "Jul", "Aug"]
+errors = rng.normal(0, 1.5, 80)
+
+fig, axes = plt.subplots(2, 2, figsize=(8, 5), dpi=120)
+axes[0, 0].plot(days, tmax, marker="o", label="Tmax")
+axes[0, 0].plot(days, tmin, marker="s", label="Tmin")
+axes[0, 0].legend(frameon=False)
+axes[0, 1].scatter(tmax, tmin, c=days, cmap="viridis")
+axes[1, 0].bar(months, rain_days, color="tab:blue", alpha=0.75)
+axes[1, 1].hist(errors, bins=np.arange(-5, 5.5, 0.5), edgecolor="white")
+fig.tight_layout()
+plt.show()</code></pre></div></section>
+  <section class="content-section"><h2>常见错误与修正</h2><div class="error-grid"><div class="error-card"><strong>用柱状图画连续时间序列</strong><p>数据点很多时读图困难。修正：连续变化优先折线图。</p></div><div class="error-card"><strong>散点图没有第三变量说明</strong><p>颜色映射后没有色标。修正：保存 <code>sc</code> 并调用 <code>fig.colorbar(sc)</code>。</p></div><div class="error-card"><strong>直方图 bins 随意</strong><p>分布形态会被误读。修正：根据变量单位设置等距边界。</p></div></div></section>
+  <section class="content-section"><h2>课堂练习</h2><p>把示例中的误差直方图改成箱线图，并说明箱线图比直方图更适合回答什么问题。</p><div class="summary-card"><strong>小结</strong><p>基础图形选择的标准不是“哪个函数熟”，而是“这个图能不能回答当前问题”。</p></div></section>
+  <nav class="mini-nav"><a href="01-objects-workflow.html">上一节</a><a href="../09-matplotlib.html">本章首页</a><a href="03-axis-ticks-grid.html">下一节</a></nav>
+</main>
+</body>
+</html>

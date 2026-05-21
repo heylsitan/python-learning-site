@@ -12,15 +12,14 @@
       <div>
         <p class="eyebrow">Chapter 09</p>
         <h1>气象数据绘图一 Matplotlib</h1>
-        <p class="tagline">从 Figure、Axes 到时间序列、等值线、色标、风场和多子图版式。</p>
+        <p class="tagline">本科课堂版：从对象式绘图到气象二维场、风矢量场和论文级导出。</p>
       </div>
     </div>
     <nav class="main-nav" aria-label="章节导航">
       <a href="../index.html">首页</a>
       <a href="08-xarray.html">上一章</a>
       <a href="10-cartopy.html">下一章</a>
-      <a href="#field-plots">气象图</a>
-      <a href="#practice">综合练习</a>
+      <a href="matplotlib/10-practice.html">综合练习</a>
     </nav>
   </header>
 
@@ -28,8 +27,8 @@
     <section class="lesson-hero content-section">
       <div>
         <div class="chapter-meta"><span>数据绘图</span><span>Matplotlib</span><span>建议 6 学时</span></div>
-        <h2>把“能画出来”提升到“能表达科学结论”</h2>
-        <p>Matplotlib 是 Python 科学绘图的基础库。本章面向气象数据分析，重点训练对象式绘图、图形类型选择、坐标轴与刻度控制、色标和等值线规范、风场可视化、多子图排版以及出版级图片保存。</p>
+        <h2>把长讲义拆成可完成的学习路径</h2>
+        <p>本章不再把所有内容放在一个长页面中，而是拆成 10 个二级页面。学生先掌握对象模型、基础图和坐标轴，再进入等值线、色标、风矢量场、多子图和图片导出。</p>
       </div>
       <aside class="lesson-card">
         <strong>授课单位</strong>
@@ -39,616 +38,59 @@
       </aside>
     </section>
 
-    <section class="content-section lesson-toc">
-      <p class="section-kicker">Contents</p>
-      <h2>目录</h2>
-      <div class="lesson-grid four">
-        <a href="#intro"><span>01</span>绘图思想与对象模型</a>
-        <a href="#workflow"><span>02</span>标准绘图流程</a>
-        <a href="#chart-choice"><span>03</span>图形类型选择</a>
-        <a href="#axis-system"><span>04</span>坐标轴、刻度和网格</a>
-        <a href="#styles"><span>05</span>样式与标注</a>
-        <a href="#field-plots"><span>06</span>等值线、色标和风场</a>
-        <a href="#layout"><span>07</span>多子图与版式</a>
-        <a href="#practice"><span>08</span>综合练习</a>
+    <section class="content-section">
+      <p class="section-kicker">Outcomes</p>
+      <h2>本章结束后你应能完成</h2>
+      <ol class="objective-list">
+        <li>用 <code>fig, ax = plt.subplots()</code> 解释 Figure、Axes、Axis 和 Artist 的关系。</li>
+        <li>根据变量类型选择折线图、散点图、柱状图、直方图、箱线图或二维场图。</li>
+        <li>独立设置坐标轴范围、主副刻度、时间轴、单位、网格线和图例。</li>
+        <li>用统一 <code>levels</code>、<code>cmap</code>、<code>norm</code> 和 <code>colorbar</code> 比较两幅气象二维场。</li>
+        <li>判断何时导出 PNG/TIF 位图，何时导出 PDF/SVG/EPS 矢量图格式。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <p class="section-kicker">Schedule</p>
+      <h2>6 学时建议安排</h2>
+      <div class="lesson-path">
+        <div><span>1-2 学时</span><strong>基础必学</strong><p>对象模型、基础图形、坐标轴、样式和标注。</p></div>
+        <div><span>3-4 学时</span><strong>气象核心</strong><p>等值线、填色图、色标、风矢量场和多子图比较。</p></div>
+        <div><span>5-6 学时</span><strong>综合练习</strong><p>完成 Weather.csv 时间序列图、二维异常场和风场抽稀练习。</p></div>
       </div>
     </section>
 
-    <section class="lesson-section" id="intro">
-      <div class="section-title"><span>01</span><h2>绘图思想与对象模型</h2></div>
-      <article class="content-section">
-        <h3>为什么气象绘图要学 Matplotlib？</h3>
-        <ul class="big-list">
-          <li>它是 NumPy、Pandas、Xarray、Cartopy 等科学绘图库最常用的底层绘图接口。</li>
-          <li>它既能画普通统计图，也能画二维空间场、剖面图、风矢量、多面板综合图。</li>
-          <li>它的优势不只是“画图”，而是能够精确控制坐标轴、刻度、色标、图例、层级和输出格式。</li>
-        </ul>
-        <p>官方网站：<a href="https://matplotlib.org/">https://matplotlib.org/</a></p>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>推荐导入方式</h3>
-          <p>课堂和科研脚本中建议以对象式 API 为主：先得到 <code>fig</code> 和 <code>ax</code>，再通过 <code>ax.plot()</code>、<code>ax.contourf()</code> 等方法控制具体子图。这样在多子图、双坐标轴、共享色标时更稳定。</p>
-          <div class="teaching-note">
-            <strong>课堂判断</strong>
-            <p>如果图里只有一个坐标区，<code>plt.plot()</code> 可以快速演示；如果图里有多个坐标区、多个色标或地图投影，应切换到 <code>fig, ax = plt.subplots()</code> 的对象式写法。</p>
-          </div>
-        </div>
-        <div class="code-panel"><div class="code-title">安装与导入</div><pre><code>conda install matplotlib
-
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker</code></pre></div>
-      </article>
-
-      <article class="content-section">
-        <h3>Matplotlib 的核心对象</h3>
-        <div class="term-grid">
-          <div><strong>Figure</strong><p>整张画布，决定输出尺寸、分辨率和全局布局。</p></div>
-          <div><strong>Axes</strong><p>真正绘图的坐标区。一个 Figure 可以包含多个 Axes。</p></div>
-          <div><strong>Axis</strong><p>横轴或纵轴对象，负责刻度位置、刻度标签和格式化。</p></div>
-          <div><strong>Artist</strong><p>图中几乎所有元素都是 Artist，包括线、点、文字、图例和色标。</p></div>
-          <div><strong>Line / Marker</strong><p>折线与点标记，常用于时间序列或廓线。</p></div>
-          <div><strong>Collection</strong><p>散点、等值线填色、矢量场等批量图元常返回 Collection。</p></div>
-          <div><strong>Legend</strong><p>解释不同曲线、点组或类别。</p></div>
-          <div><strong>Colorbar</strong><p>解释颜色与数值之间的映射关系。</p></div>
-        </div>
-      </article>
-
-      <article class="content-section">
-        <h3>成图前先问三个问题</h3>
-        <div class="principle-grid">
-          <div><strong>变量是什么？</strong><p>时间序列、类别比较、二维空间场、风矢量还是概率分布？变量类型决定图形类型。</p></div>
-          <div><strong>结论是什么？</strong><p>突出趋势、极值、异常、空间中心、风向风速，还是变量之间的关系？结论决定标注和色标。</p></div>
-          <div><strong>读者怎么读？</strong><p>单位、坐标范围、刻度间隔、图例位置、色标范围和保存分辨率，都要服务于读图。</p></div>
-        </div>
-      </article>
+    <section class="content-section">
+      <p class="section-kicker">Modules</p>
+      <h2>二级页面入口</h2>
+      <div class="module-grid">
+        <a class="module-card" href="matplotlib/01-objects-workflow.html"><span>01 基础必学</span><strong>对象模型与绘图流程</strong><p>Figure、Axes、Axis、Artist 和对象式 API。</p></a>
+        <a class="module-card" href="matplotlib/02-basic-charts.html"><span>02 基础必学</span><strong>基础图形选择</strong><p>折线图、散点图、柱状图、直方图和箱线图。</p></a>
+        <a class="module-card" href="matplotlib/03-axis-ticks-grid.html"><span>03 基础必学</span><strong>坐标轴、刻度和网格</strong><p>范围、单位、主副刻度、时间轴和网格线。</p></a>
+        <a class="module-card" href="matplotlib/04-style-annotation.html"><span>04 基础必学</span><strong>样式、图例和标注</strong><p>颜色、线型、marker、legend、annotate、中文字体。</p></a>
+        <a class="module-card" href="matplotlib/05-contour.html"><span>05 气象核心</span><strong>等值线与填色图</strong><p>meshgrid、contour、contourf、二维场维度。</p></a>
+        <a class="module-card" href="matplotlib/06-colorbar-colormap.html"><span>06 气象核心</span><strong>色标与颜色映射</strong><p>colorbar、levels、cmap、norm、共享色标。</p></a>
+        <a class="module-card" href="matplotlib/07-wind-vector-field.html"><span>07 气象核心</span><strong>风矢量场可视化</strong><p>quiver、barbs、streamplot、抽稀和箭头图例。</p></a>
+        <a class="module-card" href="matplotlib/08-layout-subplots.html"><span>08 气象核心</span><strong>多子图与版式</strong><p>subplots、GridSpec、共享坐标、共享色标和双坐标轴。</p></a>
+        <a class="module-card" href="matplotlib/09-export-formats.html"><span>09 进阶选学</span><strong>图片保存与格式</strong><p>savefig、dpi、bbox_inches、位图和矢量图格式。</p></a>
+        <a class="module-card" href="matplotlib/10-practice.html"><span>10 综合练习</span><strong>分层练习与评分标准</strong><p>基础、提高、挑战三档任务和参考评价。</p></a>
+      </div>
     </section>
 
-    <section class="lesson-section" id="workflow">
-      <div class="section-title"><span>02</span><h2>标准绘图流程</h2></div>
-      <article class="content-section">
-        <div class="flow-list">
-          <div><span>1</span>整理数据维度、单位和缺测值</div>
-          <div><span>2</span>创建 Figure 与 Axes</div>
-          <div><span>3</span>绘制主体图层</div>
-          <div><span>4</span>补充坐标轴、刻度、图例和色标</div>
-          <div><span>5</span>检查并保存图片</div>
-        </div>
-        <div class="figure-row">
-          <figure>
-            <img src="../assets/matplotlib/weather-time-series.png" alt="Weather time series example">
-            <figcaption>时间序列图不仅要画线，还要处理单位、网格、图例、双坐标轴和输出比例。</figcaption>
-          </figure>
-        </div>
-        <div class="code-panel"><div class="code-title">最小但规范的对象式流程</div><pre><code>import numpy as np
-import matplotlib.pyplot as plt
-
-x = np.linspace(-np.pi, np.pi, 200)
-y = np.sin(x)
-z = np.cos(x)
-
-fig, ax = plt.subplots(figsize=(6.4, 4.0), dpi=120)
-ax.plot(x, y, color="tab:blue", lw=2, label="sin(x)")
-ax.plot(x, z, color="tab:red", lw=2, ls="--", label="cos(x)")
-ax.set_title("Trigonometric Functions")
-ax.set_xlabel("x")
-ax.set_ylabel("value")
-ax.grid(ls="--", alpha=0.35)
-ax.legend(frameon=False)
-fig.tight_layout()
-plt.show()</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>Figure 尺寸与分辨率</h3>
-          <p><code>figsize</code> 使用英寸，<code>dpi</code> 是每英寸像素数。画布像素尺寸为 <code>figsize * dpi</code>。课堂展示图可以较宽，论文图应先按最终版面宽度设计。</p>
-          <ul>
-            <li>单栏图：可从 <code>figsize=(3.5, 2.6)</code> 开始。</li>
-            <li>课堂屏幕图：可用 <code>figsize=(8, 4.5)</code>。</li>
-            <li>保存图：通常 <code>dpi=300</code> 起步。</li>
-          </ul>
-          <div class="teaching-note">
-            <strong>延伸阅读</strong>
-            <p>保存图片时还要区分 <a href="#vector-vs-raster">矢量图和非矢量图</a>。这会影响 <code>dpi</code> 是否重要、图片放大后是否模糊，以及论文投稿时应选择 <code>pdf</code>、<code>svg</code> 还是 <code>png</code>。</p>
-          </div>
-        </div>
-        <div class="code-panel"><div class="code-title">Figure 尺寸</div><pre><code>fig = plt.figure(figsize=(6.4, 4.8), dpi=100)
-
-fig, ax = plt.subplots(figsize=(8, 4), dpi=150)</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>Axes 创建方式</h3>
-          <p><code>plt.subplots()</code> 适合绝大多数图；<code>GridSpec</code> 适合复杂排版；<code>fig.add_axes()</code> 适合手动放置色标或小图。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">创建 Axes</div><pre><code>fig, ax = plt.subplots()
-ax.plot(x, y)
-
-fig, axes = plt.subplots(2, 2, sharex=True)
-axes[0, 0].plot(x, y)
-
-fig = plt.figure()
-ax = fig.add_axes([0.12, 0.12, 0.75, 0.75])</code></pre></div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="chart-choice">
-      <div class="section-title"><span>03</span><h2>图形类型选择</h2></div>
-      <article class="content-section">
-        <h3>不要从函数开始，要从问题开始</h3>
-        <table class="lesson-table">
-          <thead><tr><th>问题类型</th><th>推荐图形</th><th>常用函数</th><th>气象例子</th></tr></thead>
-          <tbody>
-            <tr><td>随时间变化</td><td>折线图、填充图</td><td><code>plot</code>、<code>fill_between</code></td><td>逐日温度、区域平均降水距平</td></tr>
-            <tr><td>两个变量关系</td><td>散点图</td><td><code>scatter</code></td><td>温度与湿度、站点观测与模式模拟</td></tr>
-            <tr><td>类别比较</td><td>柱状图</td><td><code>bar</code>、<code>barh</code></td><td>不同月份晴天数、不同站点暴雨日数</td></tr>
-            <tr><td>分布形态</td><td>直方图、箱型图</td><td><code>hist</code>、<code>boxplot</code></td><td>日降水分布、不同区域温度误差</td></tr>
-            <tr><td>二维连续场</td><td>等值线、填色图</td><td><code>contour</code>、<code>contourf</code>、<code>pcolormesh</code></td><td>高度场、温度场、降水空间分布</td></tr>
-            <tr><td>矢量场</td><td>风羽、箭头、流线</td><td><code>barbs</code>、<code>quiver</code>、<code>streamplot</code></td><td>水平风场、水汽通量、环流异常</td></tr>
-          </tbody>
-        </table>
-      </article>
-
-      <article class="content-section">
-        <h3>常见基础图示例</h3>
-        <div class="example-grid">
-          <article>
-            <h4>折线图 Line</h4>
-            <p>展示连续变化，重点是趋势、峰值、阶段差异。</p>
-            <pre><code>fig, ax = plt.subplots()
-ax.plot(date, temp, lw=2, marker="o", label="T")
-ax.fill_between(date, temp - 1, temp + 1, alpha=0.2)
-ax.legend()</code></pre>
-          </article>
-          <article>
-            <h4>散点图 Scatter</h4>
-            <p>展示两个变量关系，可用颜色或大小加入第三个变量。</p>
-            <pre><code>fig, ax = plt.subplots()
-sc = ax.scatter(temp, rh, c=wind_speed, s=25, cmap="viridis")
-fig.colorbar(sc, ax=ax, label="Wind speed")</code></pre>
-          </article>
-          <article>
-            <h4>柱状图 Bar</h4>
-            <p>展示类别差异，不适合表达连续时间场的细节。</p>
-            <pre><code>fig, ax = plt.subplots()
-ax.bar(months, rain_days, color="tab:blue", alpha=0.75)
-ax.set_ylabel("Rainy days")</code></pre>
-          </article>
-          <article>
-            <h4>直方图 Histogram</h4>
-            <p>展示分布形态。<code>bins</code> 的选择会影响读者对分布的判断。</p>
-            <pre><code>fig, ax = plt.subplots()
-ax.hist(error, bins=np.arange(-6, 6.5, 0.5), edgecolor="white")
-ax.axvline(0, color="k", lw=1)</code></pre>
-          </article>
-        </div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="axis-system">
-      <div class="section-title"><span>04</span><h2>坐标轴、刻度和网格</h2></div>
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>坐标轴控制比样式更重要</h3>
-          <p>气象图常见问题不是颜色不好看，而是坐标范围、刻度间隔或单位不清楚。应优先设置 <code>xlim</code>、<code>ylim</code>、主副刻度、刻度方向和网格线。</p>
-          <ul>
-            <li><code>set_xlim()</code> / <code>set_ylim()</code> 控制显示范围。</li>
-            <li><code>tick_params()</code> 控制刻度方向、长度、字号和四边显示。</li>
-            <li><code>MultipleLocator</code>、<code>MaxNLocator</code>、<code>FixedLocator</code> 控制刻度位置。</li>
-            <li><code>grid(which="both")</code> 可同时显示主副刻度网格。</li>
-          </ul>
-        </div>
-        <div class="code-panel"><div class="code-title">主副刻度与网格</div><pre><code>fig, ax = plt.subplots()
-ax.plot(x, y, lw=2)
-ax.set_xlim(0, 20)
-ax.set_ylim(0, 1.1)
-
-ax.xaxis.set_major_locator(mticker.MultipleLocator(5))
-ax.xaxis.set_minor_locator(mticker.MultipleLocator(1))
-ax.yaxis.set_major_locator(mticker.MultipleLocator(0.2))
-ax.yaxis.set_minor_locator(mticker.MultipleLocator(0.1))
-
-ax.tick_params(which="major", direction="in", length=5, top=True, right=True)
-ax.tick_params(which="minor", direction="in", length=3, top=True, right=True)
-ax.grid(which="major", ls="--", lw=0.6, alpha=0.6)</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>标签、标题和时间坐标</h3>
-          <p>坐标轴标签必须包含变量名和单位。时间序列不要把日期硬改成字符串编号，应优先保留 Pandas 时间类型，再使用日期格式化。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">时间轴示例</div><pre><code>import matplotlib.dates as mdates
-
-fig, ax = plt.subplots(figsize=(9, 3))
-ax.plot(df["date"], df["temp_max"], label="Tmax")
-ax.set_ylabel("Temperature (deg C)")
-ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))
-ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d"))
-ax.tick_params(axis="x", rotation=45)
-ax.legend(frameon=False)
-fig.tight_layout()</code></pre></div>
-      </article>
-
-      <article class="content-section">
-        <h3>坐标轴检查清单</h3>
-        <div class="checklist-grid">
-          <div><strong>范围</strong><p>是否突出关键区间，是否误导性截断？</p></div>
-          <div><strong>单位</strong><p>温度、降水、风速、位势高度等单位是否写在标签或色标上？</p></div>
-          <div><strong>刻度</strong><p>刻度是否太密、太少或不等距？主副刻度是否有必要？</p></div>
-          <div><strong>网格</strong><p>网格是否帮助读数，而不是压过主体图层？</p></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="styles">
-      <div class="section-title"><span>05</span><h2>样式与标注</h2></div>
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>颜色、线型和标记</h3>
-          <p>折线图的样式参数不仅是美化工具，也用于区分变量、实验组和显著性。黑白打印或投影环境下，线型和标记比颜色更可靠。</p>
-          <table class="lesson-table">
-            <thead><tr><th>参数</th><th>作用</th><th>例子</th></tr></thead>
-            <tbody>
-              <tr><td><code>color</code> / <code>c</code></td><td>线条或点颜色</td><td><code>"tab:blue"</code>、<code>"#d94841"</code></td></tr>
-              <tr><td><code>linestyle</code> / <code>ls</code></td><td>线型</td><td><code>"-"</code>、<code>"--"</code>、<code>":"</code></td></tr>
-              <tr><td><code>linewidth</code> / <code>lw</code></td><td>线宽</td><td><code>0.8</code>、<code>2</code></td></tr>
-              <tr><td><code>marker</code></td><td>点标记</td><td><code>"o"</code>、<code>"s"</code>、<code>"^"</code></td></tr>
-              <tr><td><code>alpha</code></td><td>透明度</td><td><code>0.2</code>、<code>0.75</code></td></tr>
-              <tr><td><code>zorder</code></td><td>图层顺序</td><td>重要线条放在更高层</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="code-panel"><div class="code-title">样式参数</div><pre><code>ax.plot(x, y1, color="k", lw=1.8, marker="o",
-        markerfacecolor="white", markeredgewidth=1.2,
-        label="Observation")
-ax.plot(x, y2, color="tab:red", ls="--", lw=1.5,
-        label="Simulation")
-
-# fmt 写法：[marker][line][color]
-ax.plot(x, y3, "s:b", label="Experiment")</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>图例和注释</h3>
-          <p>图例用于解释类别，注释用于突出结论。不要把图例放在遮挡峰值、中心或显著区域的位置。</p>
-          <ul>
-            <li><code>legend(loc=...)</code> 控制图例位置。</li>
-            <li><code>frameon=False</code> 可减少视觉干扰。</li>
-            <li><code>annotate()</code> 可以用箭头标出极值或事件。</li>
-          </ul>
-        </div>
-        <div class="code-panel"><div class="code-title">Legend 与 Annotation</div><pre><code>ax.legend(loc="upper left", ncol=2, frameon=False)
-
-imax = np.argmax(temp)
-ax.annotate("Heat peak",
-            xy=(date[imax], temp[imax]),
-            xytext=(date[imax], temp[imax] + 3),
-            arrowprops={"arrowstyle": "->", "color": "0.2"})</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>中文和负号</h3>
-          <p>如果图中必须出现中文，需确认运行环境有可用中文字体；同时设置 <code>axes.unicode_minus=False</code>，避免负号显示为方块。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">中文字体设置</div><pre><code>plt.rcParams["font.sans-serif"] = ["SimHei", "Microsoft YaHei"]
-plt.rcParams["axes.unicode_minus"] = False</code></pre></div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="field-plots">
-      <div class="section-title"><span>06</span><h2>等值线、色标和风场</h2></div>
-      <article class="content-section">
-        <h3>二维场绘图：从数据范围到色标范围</h3>
-        <p>气象二维场图的关键是 <code>X</code>、<code>Y</code> 与 <code>Z</code> 的维度匹配，以及 <code>levels</code>、<code>cmap</code>、<code>norm</code>、<code>extend</code> 的一致性。多幅图比较时，不能让每幅图自动生成不同色标范围。</p>
-        <div class="figure-row">
-          <figure>
-            <img src="../assets/matplotlib/contour-colorbar.png" alt="Contour and colorbar example">
-            <figcaption>等值线填色图应显式设置 <code>levels</code>，并让色标、等值线标签和变量单位保持一致。</figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3><code>contour</code> 与 <code>contourf</code></h3>
-          <ul>
-            <li><code>contour</code> 画等值线，适合高度场、气压场、温度线。</li>
-            <li><code>contourf</code> 画填色，适合异常场、降水、湿度或背景变量。</li>
-            <li>等值线参数常是复数形式：<code>colors</code>、<code>linewidths</code>、<code>linestyles</code>。</li>
-            <li>线值标签由 <code>ax.clabel()</code> 添加，<code>fmt</code> 控制显示格式。</li>
-          </ul>
-        </div>
-        <div class="code-panel"><div class="code-title">等值线与标签</div><pre><code>x = np.linspace(70, 140, 141)
-y = np.linspace(15, 55, 81)
-X, Y = np.meshgrid(x, y)
-Z = 5800 + 80 * np.sin(X / 10) * np.cos(Y / 8)
-
-fig, ax = plt.subplots()
-levels = np.arange(5520, 5921, 40)
-cs = ax.contour(X, Y, Z, levels=levels,
-                colors="k", linewidths=0.8)
-ax.clabel(cs, inline=True, fmt="%.0f", fontsize=8)</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>色标的三种层次</h3>
-          <p>色标不是装饰，而是数值解释系统。最基础是传入绘图返回对象；比较图时要统一 <code>levels</code> 或 <code>norm</code>；复杂版式可用 <code>cax</code> 或 <code>axes_grid1</code> 精确放置色标。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">共享色标范围</div><pre><code>from matplotlib.colors import TwoSlopeNorm
-
-levels = np.arange(-6, 6.5, 0.5)
-norm = TwoSlopeNorm(vmin=-6, vcenter=0, vmax=6)
-
-fig, axes = plt.subplots(1, 2, figsize=(8, 3))
-for ax, data, title in zip(axes, [anom1, anom2], ["A", "B"]):
-    cf = ax.contourf(lon, lat, data, levels=levels,
-                     cmap="RdBu_r", norm=norm, extend="both")
-    ax.set_title(title)
-
-fig.colorbar(cf, ax=axes, orientation="horizontal",
-             pad=0.08, label="Temperature anomaly (deg C)")</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>离散色阶与边界</h3>
-          <p>降水等级、风速等级、污染等级等变量更适合离散色阶。用 <code>BoundaryNorm</code> 可把数值边界和颜色边界绑定，避免颜色解释含糊。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">BoundaryNorm</div><pre><code>from matplotlib.colors import BoundaryNorm
-
-bounds = [0, 0.1, 10, 25, 50, 100, 250]
-cmap = plt.get_cmap("Blues", len(bounds) - 1)
-norm = BoundaryNorm(bounds, cmap.N)
-
-cf = ax.contourf(lon, lat, rain, levels=bounds,
-                 cmap=cmap, norm=norm, extend="max")
-fig.colorbar(cf, ax=ax, ticks=bounds, label="Rainfall (mm)")</code></pre></div>
-      </article>
-
-      <article class="content-section">
-        <h3>风场可视化：风羽、箭头和流线</h3>
-        <p>风场的基本输入都是位置 <code>x, y</code> 和分量 <code>u, v</code>。差别在于表达重点：<code>barbs</code> 更接近天气图符号，<code>quiver</code> 适合方向和大小对比，<code>streamplot</code> 更容易显示辐合、辐散和旋转结构。</p>
-        <div class="figure-row">
-          <figure>
-            <img src="../assets/matplotlib/vector-fields.png" alt="Vector field examples">
-            <figcaption>风场图通常需要抽稀，否则箭头或风羽会互相遮挡。</figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>风场绘图模板</h3>
-          <ul>
-            <li>使用 <code>[::step, ::step]</code> 对网格抽稀。</li>
-            <li><code>quiverkey</code> 相当于箭头图的图例。</li>
-            <li>国内常用风羽单位规则可通过 <code>barb_increments</code> 调整。</li>
-          </ul>
-        </div>
-        <div class="code-panel"><div class="code-title">Quiver / Barbs / Streamplot</div><pre><code>step = 4
-Q = ax.quiver(lon[::step], lat[::step],
-              u[::step, ::step], v[::step, ::step],
-              width=0.003, color="0.15")
-ax.quiverkey(Q, 0.86, 1.04, 10, "10 m/s",
-             labelpos="E", coordinates="axes")
-
-ax.barbs(lon[::step], lat[::step],
-         u[::step, ::step], v[::step, ::step],
-         length=5, linewidth=0.5,
-         barb_increments={"half": 2, "full": 4, "flag": 20})
-
-ax.streamplot(lon, lat, u, v, density=1.4,
-              color=np.hypot(u, v), cmap="viridis")</code></pre></div>
-      </article>
-
-      <article class="content-section">
-        <h3>二维场检查清单</h3>
-        <div class="checklist-grid">
-          <div><strong>维度</strong><p><code>X</code>、<code>Y</code>、<code>Z</code> 是否能一一对应？经纬度是否需要 <code>meshgrid</code>？</p></div>
-          <div><strong>色阶</strong><p>是否显式设置 <code>levels</code>，多图比较是否共享范围？</p></div>
-          <div><strong>零值</strong><p>异常场是否以 0 为中心？是否需要 <code>TwoSlopeNorm</code>？</p></div>
-          <div><strong>标签</strong><p>等值线标签、色标单位、图题是否能说明变量和层次？</p></div>
-          <div><strong>抽稀</strong><p>风矢量是否过密？箭头图例是否说明参考风速？</p></div>
-          <div><strong>遮挡</strong><p>填色、等值线、风场、散点、文字的 <code>zorder</code> 是否合理？</p></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="layout">
-      <div class="section-title"><span>07</span><h2>多子图与版式</h2></div>
-      <article class="content-section">
-        <h3>多子图不只是“摆在一起”</h3>
-        <p>多子图的目的通常是比较：不同变量、不同时间、不同区域、不同实验。比较图应尽量共享坐标范围、色标范围和版式尺度。</p>
-        <div class="figure-row">
-          <figure>
-            <img src="../assets/matplotlib/layout-shared-colorbar.png" alt="Multi panel layout with shared colorbar">
-            <figcaption>复杂版式可以用 <code>GridSpec</code> 或 <code>subplot_mosaic</code> 组织，再用共享色标保持比较一致。</figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <article class="content-section">
-        <h3>多子图方法对比</h3>
-        <table class="lesson-table">
-          <thead><tr><th>方法</th><th>适合场景</th><th>示例</th></tr></thead>
-          <tbody>
-            <tr><td><code>plt.subplot</code></td><td>快速演示，不推荐复杂科研图长期使用。</td><td><code>plt.subplot(2, 2, 2)</code></td></tr>
-            <tr><td><code>plt.subplots</code></td><td>规则网格，多数课程图和练习图。</td><td><code>fig, axes = plt.subplots(2, 2)</code></td></tr>
-            <tr><td><code>GridSpec</code></td><td>子图宽高不等、需要独立色标轴。</td><td><code>gs = fig.add_gridspec(2, 3)</code></td></tr>
-            <tr><td><code>subplot_mosaic</code></td><td>用文字布局描述复杂面板。</td><td><code>subplot_mosaic([["A", "B"], ["C", "C"]])</code></td></tr>
-            <tr><td><code>axes_grid1</code></td><td>给现有 Axes 添加等高、等宽色标或附加轴。</td><td><code>make_axes_locatable(ax)</code></td></tr>
-          </tbody>
-        </table>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>共享色标和手动色标轴</h3>
-          <p>当多幅图共享一个色标时，可把 <code>ax=axes</code> 传给 <code>fig.colorbar()</code>。如果要精确控制位置，则新建 <code>cax</code>。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">GridSpec + cax</div><pre><code>fig = plt.figure(figsize=(8, 4), constrained_layout=True)
-gs = fig.add_gridspec(2, 3, width_ratios=[1, 1, 0.05])
-
-ax1 = fig.add_subplot(gs[0, 0])
-ax2 = fig.add_subplot(gs[0, 1])
-ax3 = fig.add_subplot(gs[1, 0])
-ax4 = fig.add_subplot(gs[1, 1])
-cax = fig.add_subplot(gs[:, 2])
-
-cf = ax4.contourf(X, Y, data4, levels=levels, cmap="RdBu_r")
-fig.colorbar(cf, cax=cax, label="Anomaly")</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>双坐标轴要克制</h3>
-          <p><code>twinx()</code> 适合把单位不同但时间一致的两个变量放在一张图里，例如温度折线和降水柱状图。若两个变量没有共同解释目的，拆成上下两图通常更清楚。</p>
-        </div>
-        <div class="code-panel"><div class="code-title">双 y 轴</div><pre><code>fig, ax1 = plt.subplots(figsize=(9, 3.5))
-ax1.plot(date, temp, color="tab:red", label="Temperature")
-ax1.set_ylabel("Temperature (deg C)", color="tab:red")
-
-ax2 = ax1.twinx()
-ax2.bar(date, rain, color="tab:blue", alpha=0.25, label="Rainfall")
-ax2.set_ylabel("Rainfall (mm)", color="tab:blue")
-
-fig.tight_layout()</code></pre></div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="save">
-      <div class="section-title"><span>Save</span><h2>图片保存与质量控制</h2></div>
-      <article class="content-section two-column lesson-block">
-        <div>
-          <h3>保存参数</h3>
-          <ul>
-            <li>文件名后缀决定格式，例如 <code>png</code>、<code>jpg</code>、<code>pdf</code>、<code>svg</code>。</li>
-            <li>报告或论文图片通常建议 <code>dpi &gt;= 300</code>。</li>
-            <li><code>bbox_inches="tight"</code> 可减少图片周边空白。</li>
-            <li>线图、流程图优先考虑 <code>pdf</code> 或 <code>svg</code>；栅格场图常用 <code>png</code>。</li>
-          </ul>
-        </div>
-        <div class="code-panel"><div class="code-title">保存图片</div><pre><code>fig.savefig("figure.png", dpi=300, bbox_inches="tight")
-fig.savefig("figure.pdf", bbox_inches="tight")
-
-# 避免 notebook 中残留图层
-plt.close(fig)</code></pre></div>
-      </article>
-
-      <article class="content-section two-column lesson-block" id="vector-vs-raster">
-        <div>
-          <h3>矢量图和非矢量图的区别</h3>
-          <p>矢量图用线条、路径、文字和几何对象保存图形，放大后边缘仍然清晰；非矢量图通常指位图或栅格图，用一个个像素保存图像，放大后会看到像素块或模糊边缘。</p>
-          <ul>
-            <li><strong>矢量图</strong>：常见格式有 <code>pdf</code>、<code>svg</code>、<code>eps</code>，适合折线图、散点图、柱状图、流程图和文字标注较多的图。</li>
-            <li><strong>非矢量图</strong>：常见格式有 <code>png</code>、<code>jpg</code>、<code>tif</code>，适合照片、卫星云图、雷达图、复杂填色场和像素型背景图。</li>
-            <li><code>dpi</code> 主要影响位图输出；矢量图的线条和文字可无限缩放，但其中嵌入的栅格图层仍会受分辨率影响。</li>
-            <li>论文或报告中的线图优先保存 <code>pdf</code> 或 <code>svg</code>；大范围 <code>contourf</code>、<code>pcolormesh</code> 或影像底图可保存高分辨率 <code>png</code>。</li>
-          </ul>
-        </div>
-        <div class="code-panel"><div class="code-title">格式选择</div><pre><code># 线图、散点图、柱状图：优先矢量格式
-fig.savefig("line_figure.pdf", bbox_inches="tight")
-fig.savefig("line_figure.svg", bbox_inches="tight")
-
-# 填色场、影像图：常用高分辨率位图
-fig.savefig("field_figure.png", dpi=300, bbox_inches="tight")
-
-# 混合复杂图层时，可同时导出两种格式检查效果
-fig.savefig("figure.pdf", bbox_inches="tight")
-fig.savefig("figure.png", dpi=300, bbox_inches="tight")</code></pre></div>
-      </article>
-
-      <article class="content-section">
-        <h3>提交前检查</h3>
-        <div class="checklist-grid">
-          <div><strong>变量</strong><p>图题或图注是否说明变量、时间、区域、层次？</p></div>
-          <div><strong>单位</strong><p>坐标轴、色标、图例是否写明单位？</p></div>
-          <div><strong>比较</strong><p>多子图是否共享可比范围？色标是否一致？</p></div>
-          <div><strong>可读性</strong><p>字体、线宽、标记、色标刻度在投影或打印时是否清楚？</p></div>
-          <div><strong>遮挡</strong><p>图例、注释、色标是否遮挡关键区域？</p></div>
-          <div><strong>复现</strong><p>脚本是否包含数据读取、筛选、绘图、保存的完整流程？</p></div>
-        </div>
-      </article>
-    </section>
-
-    <section class="lesson-section" id="practice">
-      <div class="section-title"><span>08</span><h2>综合练习</h2></div>
-      <article class="content-section practice-card">
-        <h3>练习 A：Weather.csv 时间序列综合图</h3>
-        <p>使用 <code>Weather.csv</code> 数据，绘制 New York 2015 年 7 月逐日最高温、最低温和降水量图。</p>
-        <ol>
-          <li>用 Pandas 读取数据，筛选城市和日期。</li>
-          <li>用折线图绘制最高温和最低温，用半透明填充表示日较差。</li>
-          <li>用柱状图或双坐标轴绘制降水量。</li>
-          <li>设置日期刻度、标题、坐标轴标签、图例和网格线。</li>
-          <li>保存为 <code>newyork_201507_weather.png</code>，分辨率不低于 300 dpi。</li>
-        </ol>
-        <div class="code-panel"><div class="code-title">练习骨架</div><pre><code>import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-
-weather = pd.read_csv("Weather.csv", parse_dates=["date"])
-ny = weather[(weather["city"] == "New York") &amp;
-             (weather["date"].dt.strftime("%Y-%m") == "2015-07")]
-
-fig, ax1 = plt.subplots(figsize=(10, 4), dpi=150)
-ax1.plot(ny["date"], ny["temp_max"], color="tab:red", label="temp_max")
-ax1.plot(ny["date"], ny["temp_min"], color="tab:blue", label="temp_min")
-ax1.fill_between(ny["date"], ny["temp_min"], ny["temp_max"],
-                 color="tab:orange", alpha=0.18, label="daily range")
-ax1.set_ylabel("Temperature")
-ax1.grid(ls="--", alpha=0.35)
-ax1.legend(loc="upper left", frameon=False)
-
-ax2 = ax1.twinx()
-ax2.bar(ny["date"], ny["precipitation"], alpha=0.25,
-        color="tab:blue", label="precipitation")
-ax2.set_ylabel("Precipitation")
-
-ax1.xaxis.set_major_locator(mdates.DayLocator(interval=5))
-ax1.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d"))
-fig.autofmt_xdate()
-fig.suptitle("New York Weather, July 2015")
-fig.tight_layout()
-fig.savefig("newyork_201507_weather.png", dpi=300, bbox_inches="tight")</code></pre></div>
-      </article>
-
-      <article class="content-section practice-card">
-        <h3>练习 B：二维温度异常场与统一色标</h3>
-        <p>构造或读取两组二维温度异常数据，使用相同 <code>levels</code> 和同一个色标绘制左右对比图。</p>
-        <ol>
-          <li>用 <code>np.meshgrid()</code> 构造经纬度二维网格。</li>
-          <li>用 <code>TwoSlopeNorm</code> 让 0 值位于色标中心。</li>
-          <li>叠加 <code>contour</code> 黑色等值线，并添加 <code>clabel</code>。</li>
-          <li>左右子图共享一个横向色标。</li>
-        </ol>
-      </article>
-
-      <article class="content-section practice-card">
-        <h3>练习 C：风场抽稀与箭头图例</h3>
-        <p>读取或构造 <code>u</code>、<code>v</code> 风分量，分别用 <code>quiver</code> 和 <code>streamplot</code> 表达风场结构。</p>
-        <ol>
-          <li>先计算风速 <code>speed = np.hypot(u, v)</code>。</li>
-          <li>箭头图必须抽稀，并添加 <code>quiverkey</code>。</li>
-          <li>流线图用 <code>density</code> 控制线条密度，用 <code>color=speed</code> 表示风速。</li>
-          <li>比较两种图在表达风向、风速和辐合结构上的差异。</li>
-        </ol>
-      </article>
+    <section class="content-section">
+      <p class="section-kicker">Common Issues</p>
+      <h2>本章重点纠错</h2>
+      <div class="error-grid">
+        <div class="error-card"><strong>维度不匹配</strong><p><code>x</code>、<code>y</code>、<code>Z</code> 的形状不对应，常见于 <code>contourf</code>。</p></div>
+        <div class="error-card"><strong>色标不一致</strong><p>多幅图自动色标范围不同，导致比较失真。</p></div>
+        <div class="error-card"><strong>保存图模糊</strong><p>位图 <code>dpi</code> 太低，或把线图只保存成低分辨率 PNG。</p></div>
+      </div>
     </section>
 
     <nav class="chapter-nav">
       <a href="08-xarray.html">上一章：Xarray</a>
       <a href="../index.html#roadmap">返回课程目录</a>
-      <a href="10-cartopy.html">下一章：Cartopy</a>
+      <a href="matplotlib/01-objects-workflow.html">开始学习 Matplotlib</a>
     </nav>
   </main>
 </body>
