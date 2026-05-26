@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>01-03 Python 科研环境搭建</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Intro 03</p><h1>Python 科研环境搭建</h1><p class="tagline">把操作系统、解释器、环境、编辑器和 Notebook 分清楚。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../01-intro-install.html">本章首页</a><a href="02-python-overview.html">上一节</a><a href="04-hello-world.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>环境核心</span><span>建议 35 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>说清操作系统、Python 解释器、conda 环境、编辑器和 Notebook 的分工。</li><li>能用命令检查 conda 是否安装成功。</li><li>理解为什么每个项目最好有独立环境。</li></ol></section>
+
+  <section class="content-section"><h2>先把几个词分清</h2><div class="term-grid"><div><strong>操作系统</strong><p>Windows、macOS、Linux，提供终端和文件系统。</p></div><div><strong>Python 解释器</strong><p>真正执行 <code>.py</code> 代码的程序，命令通常是 <code>python</code> 或 <code>python3</code>。</p></div><div><strong>包与环境</strong><p>conda 管理包；每个项目最好有独立环境。</p></div><div><strong>编辑器 / Notebook</strong><p>VS Code 适合写脚本，JupyterLab 适合边算边看。</p></div></div><div class="page-note"><p>关键原则：不要把系统自带 Python、课程环境、编辑器混成一件事。</p></div></section>
+
+  <section class="content-section"><h2>一张图看懂代码运行层次</h2><div class="flow-list"><div><span>1</span>你的代码<br><code>hello.py</code></div><div><span>2</span>编辑入口<br>VS Code / JupyterLab</div><div><span>3</span>课程环境<br><code>pycourse</code></div><div><span>4</span>conda<br>创建环境和装包</div><div><span>5</span>操作系统<br>Windows / macOS / Linux</div></div><div class="summary-card"><strong>排错顺序</strong><p>先问“我现在在哪一层？”再问“这一层指向的是不是课程环境？”</p></div></section>
+
+  <section class="content-section"><h2>推荐路径：轻量 conda + 课程专用环境</h2><table class="lesson-table"><thead><tr><th>路径</th><th>适合谁</th><th>优点</th><th>课堂建议</th></tr></thead><tbody><tr><td>Miniforge</td><td>科学计算 / 想默认用 conda-forge</td><td>轻量，默认社区源</td><td>优先推荐</td></tr><tr><td>Miniconda</td><td>希望使用 Anaconda 官方安装器</td><td>轻量，可自行配置源</td><td>可作为备用</td></tr><tr><td>Anaconda</td><td>一次性装大量包</td><td>图形界面多，包多</td><td>不建议作为第一选择</td></tr><tr><td>python.org</td><td>只学基础语法</td><td>简单直接</td><td>数据分析课后续会补包管理</td></tr></tbody></table></section>
+
+  <section class="content-section two-column lesson-block"><div><h2>安装后先验证</h2><p>在 Anaconda Prompt、终端或系统 shell 中运行：</p><div class="code-panel"><div class="code-title">检查 conda</div><pre><code>conda --version
+conda info
+conda env list</code></pre></div></div><div><h2>看到什么算成功</h2><ul><li>能显示 conda 版本号。</li><li><code>env list</code> 中至少有 <code>base</code> 环境。</li><li>没有出现 <code>not recognized</code>、<code>command not found</code> 等错误。</li></ul><div class="page-note"><p>如果命令找不到，先确认是否打开了正确终端，再检查安装路径和环境变量。</p></div></div></section>
+
+  <section class="content-section"><h2>课程常用命令</h2><div class="code-panel"><div class="code-title">环境与包管理</div><pre><code>conda create -n pycourse python=3.11
+conda activate pycourse
+conda install numpy pandas xarray matplotlib jupyterlab
+conda list
+conda deactivate</code></pre></div><div class="summary-card"><strong>课堂标准</strong><p>本课程以 conda 环境为标准路径。学生不需要管理员权限，也不需要改动系统 Python。</p></div></section>
+
+  <section class="content-section"><h2>国内镜像与缓存</h2><p>如果下载包很慢，可以使用课程推荐的镜像配置。配置后建议运行 <code>conda clean -i</code> 清除索引缓存，确保使用新的索引。</p><div class="code-panel"><div class="code-title">检查配置</div><pre><code>conda config --show channels
+conda clean -i</code></pre></div></section>
+
+  <nav class="mini-nav"><a href="02-python-overview.html">上一节：Python 简介</a><a href="../01-intro-install.html">本章首页</a><a href="04-hello-world.html">下一节：Hello World</a></nav>
+</main>
+</body>
+</html>

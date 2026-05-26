@@ -3,38 +3,98 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>01 Python 简介及安装环境</title>
+  <title>01 Python 科研环境搭建</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
-<body class="chapter-page">
+<body class="chapter-page lesson-page">
   <header class="site-header">
     <div class="brand-row">
       <div>
         <p class="eyebrow">Chapter 01</p>
-        <h1>Python 简介及安装环境</h1>
-        <p class="tagline">认识 Python，完成学习环境搭建，运行第一段程序。</p>
+        <h1>Python 科研环境搭建</h1>
+        <p class="tagline">本科课堂版：认识 Python，搭建课程专用环境，并用 Hello World 完成第一次运行。</p>
       </div>
     </div>
     <nav class="main-nav" aria-label="章节导航">
       <a href="../index.html">首页</a>
       <a href="02-types-variables-operators.html">下一章</a>
+      <a href="../ppt/01-intro-install/index.html">上课HTML</a>
+      <a href="intro-install/01-course-roadmap.html">学生自学入口</a>
     </nav>
   </header>
-  <main class="chapter-main">
-    <section class="content-section">
-      <div class="chapter-meta"><span>入门</span><span>环境配置</span><span>建议 2 学时</span></div>
-      <h2>学习目标</h2>
-      <ul>
-        <li>了解 Python 在科学计算、数据分析和自动化中的作用。</li>
-        <li>安装 Python、VS Code 或 JupyterLab。</li>
-        <li>能运行 `.py` 文件和 Notebook 单元格。</li>
-      </ul>
-      <h2>建议材料</h2>
-      <p>可在这里放置 HTML 讲义，或把 Jupyter Notebook 导出为 HTML 后替换本页主体内容。</p>
-      <h2>练习任务</h2>
-      <p>完成环境检查，输出 `Hello, Python!`，并记录解释器版本。</p>
-      <nav class="chapter-nav"><a href="../index.html#roadmap">返回课程目录</a><a href="02-types-variables-operators.html">下一章：数据类型、变量和运算符</a></nav>
+
+  <main class="chapter-main lesson-main">
+    <section class="lesson-hero content-section">
+      <div>
+        <div class="chapter-meta"><span>入门</span><span>环境配置</span><span>建议 2 学时</span></div>
+        <h2>先把“能运行代码”这件事做扎实</h2>
+        <p>本讲不只介绍 Python 是什么，更要让同学分清操作系统、解释器、conda 环境、编辑器和 Notebook 的关系。课堂讲授版 HTML 保留原课件版式，网站二级页面则把内容拆成可复习、可排错、可实践的学习路径。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="../ppt/01-intro-install/index.html">打开上课 HTML</a>
+          <a class="button secondary" href="intro-install/01-course-roadmap.html">进入二级页面</a>
+        </div>
+      </div>
+      <aside class="lesson-card">
+        <strong>授课单位</strong>
+        <p>兰州大学大气科学学院</p>
+        <strong>授课教师</strong>
+        <p>何永利</p>
+        <strong>课件日期</strong>
+        <p>2026.05.27</p>
+      </aside>
     </section>
+
+    <section class="content-section">
+      <p class="section-kicker">Outcomes</p>
+      <h2>本讲结束后你应能完成</h2>
+      <ol class="objective-list">
+        <li>说清本课程的定位：零基础入门，但以大学水平系统学习 Python 基础语法和科研应用。</li>
+        <li>区分源代码、目标代码、编译、解释、静态语言和脚本语言。</li>
+        <li>解释 Python 解释器、conda、课程环境、VS Code 和 JupyterLab 分别负责什么。</li>
+        <li>用 conda 检查安装状态，并创建或识别课程专用 Python 环境。</li>
+        <li>在 JupyterLab 或脚本中运行 <code>print("Hello World!")</code>，理解 <code>print()</code> 与 <code>input()</code> 的基本用法。</li>
+        <li>体验 AI Agent 编程，并能判断生成结果是否满足科学任务需求。</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <p class="section-kicker">Schedule</p>
+      <h2>2 学时建议安排</h2>
+      <div class="lesson-path">
+        <div><span>课前 10 分钟</span><strong>学情调查</strong><p>了解代码基础、学习目标和学习信心，明确课程起点。</p></div>
+        <div><span>第 1 学时</span><strong>Python 与课程定位</strong><p>理解 Python 的执行方式、应用领域、特点和课程学习主线。</p></div>
+        <div><span>第 2 学时</span><strong>环境搭建与首次运行</strong><p>安装或检查 conda，进入课程环境，运行 Hello World，并布置 AI Agent 实践。</p></div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <p class="section-kicker">Modules</p>
+      <h2>二级页面入口</h2>
+      <div class="module-grid">
+        <a class="module-card" href="intro-install/01-course-roadmap.html"><span>01 课程导入</span><strong>学情调查与课程安排</strong><p>代码基础、学习目标、课程定位和 11 讲课程大纲。</p></a>
+        <a class="module-card" href="intro-install/02-python-overview.html"><span>02 概念基础</span><strong>Python 简介</strong><p>程序设计语言、编译解释、Python 诞生、特点和应用领域。</p></a>
+        <a class="module-card" href="intro-install/03-environment-stack.html"><span>03 环境核心</span><strong>Python 科研环境搭建</strong><p>操作系统、解释器、conda、课程环境、编辑器和 Notebook 的分工。</p></a>
+        <a class="module-card" href="intro-install/04-hello-world.html"><span>04 首次运行</span><strong>Hello World 与输入输出</strong><p>JupyterLab、print、字符串、变量、input 和类型转换。</p></a>
+        <a class="module-card" href="intro-install/05-ai-agent-practice.html"><span>05 课后实践</span><strong>AI Agent 编程初体验</strong><p>从手写代码转向描述任务、审核结果和迭代提示词。</p></a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <p class="section-kicker">Common Issues</p>
+      <h2>本讲重点纠错</h2>
+      <div class="error-grid">
+        <div class="error-card"><strong>把 Python 和 conda 混为一谈</strong><p>Python 是解释器，conda 是环境和包管理工具。排错时先确认当前激活的是哪个环境。</p></div>
+        <div class="error-card"><strong>编辑器选错解释器</strong><p>VS Code、终端和 JupyterLab 可能指向不同环境。课程练习要统一到课程环境。</p></div>
+        <div class="error-card"><strong>只看 AI 是否生成代码</strong><p>AI Agent 生成代码只是开始，还要检查地图边界、数据来源、颜色含义和结果是否合理。</p></div>
+      </div>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html#roadmap">返回课程目录</a>
+      <a href="../ppt/01-intro-install/index.html">上课 HTML</a>
+      <a href="intro-install/01-course-roadmap.html">开始学习第 01 讲</a>
+      <a href="02-types-variables-operators.html">下一章：数据类型、变量和运算符</a>
+    </nav>
   </main>
 </body>
 </html>

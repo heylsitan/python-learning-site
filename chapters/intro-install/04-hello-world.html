@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>01-04 Hello World 与输入输出</title><link rel="stylesheet" href="../../styles.css"></head>
+<body class="chapter-page lesson-page">
+<header class="site-header"><div class="brand-row"><div><p class="eyebrow">Intro 04</p><h1>Hello World 与输入输出</h1><p class="tagline">用最小程序确认环境可用，并理解函数、字符串和输入。</p></div></div><nav class="main-nav"><a href="../../index.html">首页</a><a href="../01-intro-install.html">本章首页</a><a href="03-environment-stack.html">上一节</a><a href="05-ai-agent-practice.html">下一节</a></nav></header>
+<main class="chapter-main lesson-main">
+  <section class="content-section"><div class="chapter-meta"><span>首次运行</span><span>建议 25 分钟</span></div><h2>学习目标</h2><ol class="objective-list"><li>能在 JupyterLab 或 Python 脚本中运行第一段程序。</li><li>理解 <code>print()</code> 的基本作用和参数写法。</li><li>知道 <code>input()</code> 默认返回字符串，并能进行简单类型转换。</li></ol></section>
+
+  <section class="content-section two-column lesson-block"><div><h2>第一个程序</h2><p>Miniconda 或课程环境准备好后，可以先在 JupyterLab 中运行最小程序。</p><div class="code-panel"><div class="code-title">Hello World</div><pre><code>print("Hello World!")</code></pre></div></div><div><h2>程序简析</h2><ul><li><code>print()</code> 是 Python 内置函数，用来输出括号中的内容。</li><li><code>"Hello World!"</code> 是字符串，作为参数传给 <code>print()</code>。</li><li>函数执行后默认换行。</li></ul><div class="page-note"><p>第一段程序的意义不是内容复杂，而是确认“环境、入口、解释器”三件事已经连通。</p></div></div></section>
+
+  <section class="content-section"><h2>print 的基本用法</h2><div class="code-panel"><div class="code-title">输出多个参数</div><pre><code>country = "China"
+year = 2026
+
+print("Country:", country)
+print("Year:", year)
+print("China", country, year)
+print("不换行输出", end="")</code></pre></div><div class="summary-card"><strong>概念提醒</strong><p>引号内的内容是字符串常量，会照原样输出；没有引号的名字通常是变量，会输出变量当前保存的内容。</p></div></section>
+
+  <section class="content-section two-column lesson-block"><div><h2>input 函数</h2><p><code>input()</code> 是 Python 中最基本的输入方法。括号里的提示信息会显示在屏幕上，用于提示用户输入。</p><div class="code-panel"><div class="code-title">读取输入</div><pre><code>name = input("请输入姓名：")
+print("你好，", name)</code></pre></div></div><div><h2>默认类型</h2><p><code>input()</code> 接收到的数据默认是字符串。如果要作为数字计算，需要用类型转换函数。</p><div class="code-panel"><div class="code-title">转换为整数</div><pre><code>age = input("请输入年龄：")
+print(type(age))
+
+age = int(input("请输入年龄："))
+print(type(age))</code></pre></div></div></section>
+
+  <section class="content-section"><h2>课堂练习</h2><div class="level-grid"><div class="level-card"><span>基础</span><strong>输出个人信息</strong><p>用三次 <code>print()</code> 输出姓名、专业和最想用 Python 做的事。</p></div><div class="level-card"><span>提高</span><strong>读取并转换年龄</strong><p>用 <code>input()</code> 输入年龄，转换成整数后输出明年年龄。</p></div><div class="level-card"><span>挑战</span><strong>环境记录</strong><p>记录解释器版本、当前环境名和 JupyterLab 是否可正常启动。</p></div></div><div class="summary-card"><strong>小结</strong><p>能稳定运行 Hello World，才有资格继续学习变量、数据类型和流程控制。</p></div></section>
+
+  <nav class="mini-nav"><a href="03-environment-stack.html">上一节：环境搭建</a><a href="../01-intro-install.html">本章首页</a><a href="05-ai-agent-practice.html">下一节：AI Agent 实践</a></nav>
+</main>
+</body>
+</html>
